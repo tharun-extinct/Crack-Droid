@@ -40,7 +40,9 @@
 - [-] 3. Create device communication layer
 
 
-  - [-] 3.1 Implement ADB handler for USB debugging enabled devices
+  - [x] 3.1 Implement ADB handler for USB debugging enabled devices
+
+
 
     - Write ADBHandler class with device detection via `adb devices`
     - Implement lock type identification through system properties

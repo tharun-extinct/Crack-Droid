@@ -13,8 +13,8 @@ from typing import List, Optional, Dict, Any, Tuple
 from dataclasses import dataclass
 from datetime import datetime
 
-from ..interfaces import IDeviceHandler, AndroidDevice, LockType, ForensicsException
-from ..models.device import LockoutPolicy, DeviceValidationError
+from ..interfaces import IDeviceHandler, LockType, ForensicsException
+from ..models.device import AndroidDevice, LockoutPolicy, DeviceValidationError
 
 
 class ADBException(ForensicsException):
@@ -71,6 +71,10 @@ class ADBHandler(IDeviceHandler):
                 raise ADBException("ADB not properly installed or accessible")
         except FileNotFoundError:
             raise ADBException(f"ADB executable not found at: {self.adb_path}")
+        except ADBException as e:
+            if "Failed to execute ADB command" in str(e):
+                raise ADBException(f"ADB executable not found at: {self.adb_path}")
+            raise
     
     def _execute_adb_command(self, args: List[str], device_serial: str = None, 
                            timeout: int = None) -> ADBCommand:
@@ -158,7 +162,7 @@ class ADBHandler(IDeviceHandler):
                     continue
                 
                 serial = parts[0]
-                status = parts[1]
+                status = parts[1].split()[0]  # Take first word in case of extra info
                 
                 if status != "device":
                     continue  # Skip unauthorized, offline, etc.
@@ -169,6 +173,13 @@ class ADBHandler(IDeviceHandler):
                     prop_text = parts[2]
                     # Parse properties like "model:SM_G973F device:beyond1lte"
                     for prop in prop_text.split():
+                        if ':' in prop:
+                            key, value = prop.split(':', 1)
+                            properties[key] = value
+                elif len(parts) == 2 and len(parts[1].split()) > 1:
+                    # Properties might be in the status field
+                    status_parts = parts[1].split()
+                    for prop in status_parts[1:]:  # Skip "device" status
                         if ':' in prop:
                             key, value = prop.split(':', 1)
                             properties[key] = value
