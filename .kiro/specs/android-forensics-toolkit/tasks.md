@@ -25,15 +25,23 @@
     - _Requirements: 1.5, 4.2_
 
 
-  - [ ] 2.2 Implement AttackStrategy and EvidenceRecord models
+  - [x] 2.2 Implement AttackStrategy and EvidenceRecord models
+
+
+
+
+
     - Code AttackStrategy dataclass with attack configuration
     - Implement EvidenceRecord model with chain of custody tracking
     - Add serialization methods for JSON export
     - Write unit tests for model serialization and validation
     - _Requirements: 2.4, 4.1, 4.3_
 
-- [ ] 3. Create device communication layer
-  - [ ] 3.1 Implement ADB handler for USB debugging enabled devices
+- [-] 3. Create device communication layer
+
+
+  - [-] 3.1 Implement ADB handler for USB debugging enabled devices
+
     - Write ADBHandler class with device detection via `adb devices`
     - Implement lock type identification through system properties
     - Add simulated input injection methods for brute force attacks
