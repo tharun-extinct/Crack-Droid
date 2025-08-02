@@ -54,6 +54,12 @@ class AndroidDevice:
     encryption_enabled: bool = True
     developer_options_enabled: bool = False
     
+    # Fastboot-specific metadata
+    bootloader_version: Optional[str] = None
+    secure_boot: Optional[bool] = None
+    slot_count: int = 0
+    current_slot: Optional[str] = None
+    
     # Forensic analysis metadata
     discovered_at: datetime = field(default_factory=datetime.now)
     last_validated: Optional[datetime] = None
@@ -279,6 +285,10 @@ class AndroidDevice:
             'bootloader_locked': self.bootloader_locked,
             'encryption_enabled': self.encryption_enabled,
             'developer_options_enabled': self.developer_options_enabled,
+            'bootloader_version': self.bootloader_version,
+            'secure_boot': self.secure_boot,
+            'slot_count': self.slot_count,
+            'current_slot': self.current_slot,
             'discovered_at': self.discovered_at.isoformat(),
             'last_validated': self.last_validated.isoformat() if self.last_validated else None,
             'validation_errors': self.validation_errors,
@@ -336,6 +346,10 @@ class AndroidDevice:
             bootloader_locked=data.get('bootloader_locked', True),
             encryption_enabled=data.get('encryption_enabled', True),
             developer_options_enabled=data.get('developer_options_enabled', False),
+            bootloader_version=data.get('bootloader_version'),
+            secure_boot=data.get('secure_boot'),
+            slot_count=data.get('slot_count', 0),
+            current_slot=data.get('current_slot'),
             discovered_at=discovered_at,
             last_validated=last_validated,
             validation_errors=data.get('validation_errors', [])

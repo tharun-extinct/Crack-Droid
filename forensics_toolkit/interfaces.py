@@ -9,6 +9,59 @@ from datetime import datetime
 from enum import Enum
 
 
+class UserRole(Enum):
+    """User roles for forensic operations"""
+    ADMIN = "admin"
+    INVESTIGATOR = "investigator"
+    ANALYST = "analyst"
+    VIEWER = "viewer"
+
+
+class Permission(Enum):
+    """System permissions"""
+    DEVICE_ACCESS = "device_access"
+    ATTACK_EXECUTION = "attack_execution"
+    EVIDENCE_MANAGEMENT = "evidence_management"
+    USER_MANAGEMENT = "user_management"
+    SYSTEM_CONFIG = "system_config"
+    REPORT_GENERATION = "report_generation"
+
+
+@dataclass
+class User:
+    """User profile for authentication"""
+    username: str
+    role: UserRole
+    permissions: List[Permission]
+    created_at: datetime
+    last_login: Optional[datetime] = None
+    session_timeout: int = 3600  # seconds
+    is_active: bool = True
+
+
+@dataclass
+class Session:
+    """User session information"""
+    session_id: str
+    user: User
+    created_at: datetime
+    last_activity: datetime
+    expires_at: datetime
+    is_active: bool = True
+
+
+@dataclass
+class AuditLog:
+    """Audit log entry"""
+    timestamp: datetime
+    user: str
+    action: str
+    resource: str
+    result: str
+    ip_address: Optional[str] = None
+    details: Optional[Dict[str, Any]] = None
+
+
 class LockType(Enum):
     """Android device lock types"""
     PIN = "pin"
@@ -169,6 +222,83 @@ class IForensicsEngine(ABC):
         pass
 
 
+class IAuthenticationService(ABC):
+    """Interface for authentication services"""
+    
+    @abstractmethod
+    def authenticate_user(self, username: str, password: str) -> Optional[User]:
+        """Authenticate user credentials"""
+        pass
+    
+    @abstractmethod
+    def create_session(self, user: User) -> Session:
+        """Create user session"""
+        pass
+    
+    @abstractmethod
+    def validate_session(self, session_id: str) -> Optional[Session]:
+        """Validate and refresh session"""
+        pass
+    
+    @abstractmethod
+    def logout_user(self, session_id: str) -> bool:
+        """Logout user and invalidate session"""
+        pass
+    
+    @abstractmethod
+    def check_permission(self, session_id: str, permission: Permission) -> bool:
+        """Check if user has specific permission"""
+        pass
+
+
+class IUserManager(ABC):
+    """Interface for user management"""
+    
+    @abstractmethod
+    def create_user(self, username: str, password: str, role: UserRole) -> User:
+        """Create new user"""
+        pass
+    
+    @abstractmethod
+    def get_user(self, username: str) -> Optional[User]:
+        """Get user by username"""
+        pass
+    
+    @abstractmethod
+    def update_user(self, username: str, **kwargs) -> bool:
+        """Update user information"""
+        pass
+    
+    @abstractmethod
+    def delete_user(self, username: str) -> bool:
+        """Delete user"""
+        pass
+    
+    @abstractmethod
+    def list_users(self) -> List[User]:
+        """List all users"""
+        pass
+
+
+class IAuditLogger(ABC):
+    """Interface for audit logging"""
+    
+    @abstractmethod
+    def log_access_attempt(self, username: str, success: bool, ip_address: str = None) -> None:
+        """Log authentication attempt"""
+        pass
+    
+    @abstractmethod
+    def log_operation(self, user: str, action: str, resource: str, result: str, **kwargs) -> None:
+        """Log user operation"""
+        pass
+    
+    @abstractmethod
+    def get_audit_logs(self, start_date: datetime = None, end_date: datetime = None) -> List[AuditLog]:
+        """Retrieve audit logs"""
+        pass
+
+
 class ForensicsException(Exception):
     """Base exception for forensics operations"""
     
@@ -183,3 +313,13 @@ class ForensicsException(Exception):
         """Log error with evidence preservation"""
         # Implementation will be added in evidence management task
         pass
+
+
+class AuthenticationException(ForensicsException):
+    """Authentication-related exceptions"""
+    pass
+
+
+class AuthorizationException(ForensicsException):
+    """Authorization-related exceptions"""
+    pass

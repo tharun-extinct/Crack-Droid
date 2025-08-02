@@ -1,7 +1,45 @@
 """
-Service layer for device communication and operations
+Services package for forensics toolkit
 """
 
-from .adb_handler import ADBHandler, ADBException, ADBCommand
+from .authentication import (
+    RolePermissionManager,
+    UserManager,
+    AuditLogger,
+    AuthenticationService
+)
+from .auth_decorators import (
+    require_permission,
+    require_authentication,
+    AuthenticationMixin
+)
+from .legal_compliance import (
+    LegalDisclaimerManager,
+    CaseManager,
+    EnvironmentValidator,
+    ComplianceAuditLogger,
+    LegalComplianceService,
+    LegalDisclaimer,
+    ConsentRecord,
+    CaseInfo,
+    ComplianceAuditEntry
+)
 
-__all__ = ['ADBHandler', 'ADBException', 'ADBCommand']
+__all__ = [
+    'RolePermissionManager',
+    'UserManager',
+    'AuditLogger',
+    'AuthenticationService',
+    'require_permission',
+    'require_authentication',
+    'AuthenticationMixin',
+    'LegalDisclaimerManager',
+    'CaseManager',
+    'EnvironmentValidator',
+    'ComplianceAuditLogger',
+    'LegalComplianceService',
+    'LegalDisclaimer',
+    'ConsentRecord',
+    'CaseInfo',
+    'ComplianceAuditEntry'
+]
