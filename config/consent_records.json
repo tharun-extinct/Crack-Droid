@@ -1,0 +1,10 @@
+[
+  {
+    "user": "investigator1",
+    "disclaimer_version": "1.0",
+    "timestamp": "2025-08-03T01:18:11.623846",
+    "ip_address": "192.168.1.100",
+    "user_agent": null,
+    "consent_given": true
+  }
+]

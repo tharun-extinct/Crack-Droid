@@ -1,0 +1,6 @@
+{"timestamp": "2025-08-03T01:18:11.490255", "user": "SYSTEM", "action": "CREATE_DEFAULT_ADMIN", "resource": "USER_MANAGEMENT", "result": "SUCCESS", "ip_address": null, "details": null}
+{"timestamp": "2025-08-03T01:18:11.617880", "user": "investigator1", "action": "LOGIN_ATTEMPT", "resource": "AUTHENTICATION", "result": "SUCCESS", "ip_address": null, "details": null}
+{"timestamp": "2025-08-03T01:18:11.617880", "user": "investigator1", "action": "CREATE_SESSION", "resource": "AUTHENTICATION", "result": "SUCCESS", "ip_address": null, "details": {"session_id": "yb_fnKBMGsYHLD8CcBs4YOkWTvPdGh4BdyQozLaKtOE"}}
+{"timestamp": "2025-08-03T01:18:11.617880", "user": "investigator1", "action": "PERMISSION_CHECK", "resource": "device_access", "result": "SUCCESS", "ip_address": null, "details": {"session_id": "yb_fnKBMGsYHLD8CcBs4YOkWTvPdGh4BdyQozLaKtOE"}}
+{"timestamp": "2025-08-03T01:18:11.617880", "user": "investigator1", "action": "PERMISSION_CHECK", "resource": "user_management", "result": "DENIED", "ip_address": null, "details": {"session_id": "yb_fnKBMGsYHLD8CcBs4YOkWTvPdGh4BdyQozLaKtOE"}}
+{"timestamp": "2025-08-03T01:18:11.637766", "user": "investigator1", "action": "LOGOUT", "resource": "AUTHENTICATION", "result": "SUCCESS", "ip_address": null, "details": {"session_id": "yb_fnKBMGsYHLD8CcBs4YOkWTvPdGh4BdyQozLaKtOE"}}
