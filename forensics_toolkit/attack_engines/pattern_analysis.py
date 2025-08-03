@@ -18,6 +18,25 @@ from ..interfaces import IAttackEngine, AttackType, LockType, ForensicsException
 from ..models.attack import AttackStrategy
 from ..models.device import AndroidDevice
 
+# OpenCV wrapper will be imported dynamically to avoid circular dependency
+OpenCVWrapper = None
+OpenCVException = Exception
+DetectedCircle = None
+DetectedLine = None
+ImageProcessingConfig = None
+OPENCV_WRAPPER_AVAILABLE = False
+
+def _import_opencv_wrapper():
+    """Dynamically import OpenCV wrapper to avoid circular dependency"""
+    global OpenCVWrapper, OpenCVException, DetectedCircle, DetectedLine, ImageProcessingConfig, OPENCV_WRAPPER_AVAILABLE
+    try:
+        from forensics_toolkit.services.opencv_wrapper import OpenCVWrapper, OpenCVException, DetectedCircle, DetectedLine, ImageProcessingConfig
+        OPENCV_WRAPPER_AVAILABLE = True
+        return True
+    except ImportError:
+        OPENCV_WRAPPER_AVAILABLE = False
+        return False
+
 # OpenCV is optional - graceful degradation if not available
 try:
     import cv2
@@ -176,14 +195,24 @@ class PatternAnalysis(IAttackEngine):
         self.debug_mode = debug_mode
         self.logger = logging.getLogger(__name__)
         
-        if not OPENCV_AVAILABLE:
+        # Initialize OpenCV wrapper
+        self.opencv_wrapper = None
+        if OPENCV_AVAILABLE and _import_opencv_wrapper():
+            try:
+                config = ImageProcessingConfig()
+                self.opencv_wrapper = OpenCVWrapper(config=config, debug_mode=debug_mode)
+                self.logger.info("OpenCV wrapper initialized successfully")
+            except (OpenCVException, Exception) as e:
+                self.logger.warning(f"OpenCV wrapper initialization failed: {str(e)}")
+                self.opencv_wrapper = None
+        else:
             self.logger.warning("OpenCV not available - visual pattern recognition disabled")
         
         # Pattern grid configuration
         self.grid_size = 3
         self.total_points = 9
         
-        # Visual recognition parameters
+        # Visual recognition parameters (kept for backward compatibility)
         self.circle_detection_params = {
             'dp': 1,
             'min_dist': 50,
@@ -349,19 +378,14 @@ class PatternAnalysis(IAttackEngine):
         Returns:
             AttackResult: Analysis result
         """
-        if not OPENCV_AVAILABLE:
-            raise PatternAnalysisException("OpenCV not available for visual pattern recognition")
+        if not self.opencv_wrapper:
+            raise PatternAnalysisException("OpenCV wrapper not available for visual pattern recognition")
         
         screenshot_path = strategy.custom_parameters['screenshot_path']
         
         try:
-            if not os.path.exists(screenshot_path):
-                raise PatternAnalysisException(f"Screenshot file not found: {screenshot_path}")
-            
-            # Load and process the screenshot
-            image = cv2.imread(screenshot_path)
-            if image is None:
-                raise PatternAnalysisException(f"Could not load screenshot: {screenshot_path}")
+            # Load screenshot using OpenCV wrapper
+            image = self.opencv_wrapper.load_image(screenshot_path)
             
             # Detect pattern grid and extract pattern
             detected_pattern = self._detect_pattern_from_image(image)
@@ -373,7 +397,8 @@ class PatternAnalysis(IAttackEngine):
                     duration=0.0,
                     result_data=json.dumps({
                         'pattern': detected_pattern.to_dict(),
-                        'method': 'visual_recognition'
+                        'method': 'visual_recognition',
+                        'opencv_version': self.opencv_wrapper.get_version_info()
                     })
                 )
             else:
@@ -435,7 +460,7 @@ class PatternAnalysis(IAttackEngine):
     
     def _detect_pattern_from_image(self, image: np.ndarray) -> Optional[AndroidPattern]:
         """
-        Detect pattern from screenshot using OpenCV
+        Detect pattern from screenshot using OpenCV wrapper
         
         Args:
             image: Input image as numpy array
@@ -443,47 +468,49 @@ class PatternAnalysis(IAttackEngine):
         Returns:
             AndroidPattern: Detected pattern or None
         """
-        if not OPENCV_AVAILABLE:
+        if not self.opencv_wrapper:
+            self.logger.warning("OpenCV wrapper not available")
             return None
         
         try:
-            # Convert to grayscale
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            # Detect circles using OpenCV wrapper
+            detected_circles = self.opencv_wrapper.detect_circles(image)
             
-            # Apply Gaussian blur to reduce noise
-            blurred = cv2.GaussianBlur(gray, (9, 9), 2)
-            
-            # Detect circles (pattern dots)
-            circles = cv2.HoughCircles(
-                blurred,
-                cv2.HOUGH_GRADIENT,
-                **self.circle_detection_params
-            )
-            
-            if circles is None or len(circles[0]) < 4:
+            if len(detected_circles) < 4:
                 self.logger.warning("Could not detect enough pattern points")
                 return None
             
-            circles = np.round(circles[0, :]).astype("int")
-            
-            # Sort circles to form a 3x3 grid
-            grid_points = self._organize_circles_to_grid(circles)
+            # Extract 3x3 grid from detected circles
+            grid_points = self.opencv_wrapper.extract_pattern_grid(detected_circles)
             
             if not grid_points:
                 self.logger.warning("Could not organize circles into 3x3 grid")
                 return None
             
-            # Detect the pattern path
-            pattern_sequence = self._detect_pattern_path(image, grid_points)
+            # Detect lines to determine pattern connectivity
+            detected_lines = self.opencv_wrapper.detect_lines(image)
             
-            if pattern_sequence:
-                points = [PatternPoint.from_index(idx) for idx in pattern_sequence]
-                pattern = AndroidPattern(points=points, confidence=0.8)
+            # Analyze pattern connectivity
+            pattern_connections = self.opencv_wrapper.analyze_pattern_connectivity(grid_points, detected_lines)
+            
+            if pattern_connections:
+                # Convert connections to pattern sequence
+                pattern_sequence = self._connections_to_sequence(pattern_connections)
                 
-                if self.debug_mode:
-                    self._save_debug_image(image, grid_points, pattern_sequence)
-                
-                return pattern
+                if pattern_sequence and len(pattern_sequence) >= 3:
+                    points = [PatternPoint.from_index(idx) for idx in pattern_sequence]
+                    pattern = AndroidPattern(points=points, confidence=0.8)
+                    
+                    if self.debug_mode:
+                        debug_image = self.opencv_wrapper.create_debug_visualization(
+                            image, detected_circles, detected_lines, pattern_sequence
+                        )
+                        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                        debug_path = f"pattern_analysis_debug_{timestamp}.png"
+                        self.opencv_wrapper.save_image(debug_image, debug_path)
+                        self.logger.info(f"Debug visualization saved: {debug_path}")
+                    
+                    return pattern
             
             return None
             
@@ -491,9 +518,63 @@ class PatternAnalysis(IAttackEngine):
             self.logger.error(f"Pattern detection failed: {str(e)}")
             return None
     
+    def _connections_to_sequence(self, connections: List[Tuple[int, int]]) -> List[int]:
+        """
+        Convert pattern connections to sequence
+        
+        Args:
+            connections: List of (from_index, to_index) connections
+            
+        Returns:
+            List[int]: Pattern sequence
+        """
+        if not connections:
+            return []
+        
+        # Build adjacency list
+        adjacency = {}
+        for start, end in connections:
+            if start not in adjacency:
+                adjacency[start] = []
+            if end not in adjacency:
+                adjacency[end] = []
+            adjacency[start].append(end)
+            adjacency[end].append(start)
+        
+        # Find starting point (point with only one connection or arbitrary start)
+        start_point = None
+        for point, neighbors in adjacency.items():
+            if len(neighbors) == 1:
+                start_point = point
+                break
+        
+        if start_point is None and adjacency:
+            start_point = list(adjacency.keys())[0]
+        
+        if start_point is None:
+            return []
+        
+        # Build sequence by following connections
+        sequence = [start_point]
+        visited = {start_point}
+        current = start_point
+        
+        while True:
+            next_points = [p for p in adjacency.get(current, []) if p not in visited]
+            if not next_points:
+                break
+            
+            # Choose the next point (for now, just take the first)
+            next_point = next_points[0]
+            sequence.append(next_point)
+            visited.add(next_point)
+            current = next_point
+        
+        return sequence
+    
     def _organize_circles_to_grid(self, circles: np.ndarray) -> Optional[List[Tuple[int, int]]]:
         """
-        Organize detected circles into a 3x3 grid
+        Organize detected circles into a 3x3 grid (legacy method for backward compatibility)
         
         Args:
             circles: Array of detected circles (x, y, radius)
@@ -807,6 +888,8 @@ class PatternAnalysis(IAttackEngine):
         """
         return {
             'opencv_available': OPENCV_AVAILABLE,
+            'opencv_wrapper_available': self.opencv_wrapper is not None,
+            'opencv_version_info': self.opencv_wrapper.get_version_info() if self.opencv_wrapper else None,
             'debug_mode': self.debug_mode,
             'circle_detection_params': self.circle_detection_params,
             'supported_formats': ['png', 'jpg', 'jpeg', 'bmp'],

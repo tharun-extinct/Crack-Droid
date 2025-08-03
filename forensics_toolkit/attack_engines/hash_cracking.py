@@ -19,6 +19,7 @@ import logging
 from ..interfaces import IAttackEngine, AttackType, LockType, ForensicsException
 from ..models.attack import AttackStrategy, AttackStatus, DelayStrategy
 from ..models.device import AndroidDevice
+from .hashcat_wrapper import HashcatWrapper, HashcatConfig, HashcatMode, AttackMode, HashcatResult
 
 
 class HashCrackingException(ForensicsException):
@@ -71,7 +72,13 @@ class HashTarget:
         
         # Android-specific patterns (check first)
         if 'android' in self.metadata.get('source', '').lower():
-            if len(hash_clean) == 40:
+            if 'pin' in self.metadata.get('source', '').lower():
+                return HashFormat.ANDROID_PIN
+            elif 'password' in self.metadata.get('source', '').lower():
+                return HashFormat.ANDROID_PASSWORD
+            elif 'pattern' in self.metadata.get('source', '').lower():
+                return HashFormat.ANDROID_PATTERN
+            elif len(hash_clean) == 40:
                 return HashFormat.ANDROID_PIN
             elif len(hash_clean) == 64:
                 return HashFormat.ANDROID_PASSWORD
@@ -160,10 +167,19 @@ class HashCracking(IAttackEngine):
         """
         self.logger = logger or logging.getLogger(__name__)
         
-        # Engine configuration
-        self._hashcat_path = self._find_hashcat()
+        # Initialize Hashcat wrapper
+        try:
+            self._hashcat_wrapper = HashcatWrapper(logger=self.logger)
+            self._hashcat_available = True
+            self._gpu_available = len(self._hashcat_wrapper.get_gpu_info()) > 0
+        except Exception as e:
+            self.logger.warning(f"Hashcat wrapper initialization failed: {e}")
+            self._hashcat_wrapper = None
+            self._hashcat_available = False
+            self._gpu_available = False
+        
+        # Fallback engines
         self._john_path = self._find_john()
-        self._gpu_available = self._check_gpu_availability()
         
         # Attack state
         self._current_strategy: Optional[AttackStrategy] = None
@@ -178,8 +194,18 @@ class HashCracking(IAttackEngine):
         # Temporary files management
         self._temp_files: List[str] = []
         
-        self.logger.info(f"Hash cracking engine initialized - Hashcat: {bool(self._hashcat_path)}, "
+        # Performance monitoring
+        self._performance_data: Dict[str, Any] = {}
+        
+        self.logger.info(f"Hash cracking engine initialized - Hashcat: {self._hashcat_available}, "
                         f"John: {bool(self._john_path)}, GPU: {self._gpu_available}")
+    
+    @property
+    def _hashcat_path(self) -> Optional[str]:
+        """Compatibility property for old interface"""
+        if self._hashcat_wrapper and self._hashcat_available:
+            return self._hashcat_wrapper.hashcat_path
+        return None
     
     def _find_hashcat(self) -> Optional[str]:
         """Find Hashcat executable"""
@@ -269,7 +295,7 @@ class HashCracking(IAttackEngine):
                 return False
             
             # Check if we have at least one cracking engine
-            if not self._hashcat_path and not self._john_path:
+            if not self._hashcat_available and not self._john_path:
                 self.logger.error("No hash cracking engines available")
                 return False
             
@@ -354,7 +380,219 @@ class HashCracking(IAttackEngine):
             except Exception:
                 total_size += 10000  # Default estimate
         
-        return max(total_size, 1000)  # Minimum estimate   
+        return max(total_size, 1000)  # Minimum estimate
+    
+    def _create_hashcat_config(self, hash_target: HashTarget, strategy: AttackStrategy) -> HashcatConfig:
+        """Create optimized Hashcat configuration"""
+        config = HashcatConfig()
+        
+        # GPU configuration
+        config.gpu_enabled = strategy.gpu_acceleration and self._gpu_available
+        
+        # Performance tuning based on hash type
+        if hash_target.hash_format in [HashFormat.MD5, HashFormat.SHA1]:
+            config.workload_profile = 4  # Insane for fast hashes
+        elif hash_target.hash_format in [HashFormat.SHA256, HashFormat.SHA512]:
+            config.workload_profile = 3  # High for medium hashes
+        else:
+            config.workload_profile = 2  # Default for slow hashes
+        
+        # Attack mode selection
+        if len(strategy.wordlists) > 0:
+            config.attack_mode = AttackMode.STRAIGHT
+        else:
+            config.attack_mode = AttackMode.BRUTE_FORCE
+            config.increment_mode = True
+        
+        # Hash mode
+        config.hash_mode = self._get_hashcat_mode_from_format(hash_target.hash_format)
+        
+        # Timeout
+        config.runtime_limit = strategy.timeout_seconds
+        
+        # Status updates
+        config.status_timer = 10
+        config.machine_readable = True
+        
+        return config
+    
+    def _get_hashcat_mode_from_format(self, hash_format: HashFormat) -> HashcatMode:
+        """Convert HashFormat to HashcatMode"""
+        format_map = {
+            HashFormat.MD5: HashcatMode.MD5,
+            HashFormat.SHA1: HashcatMode.SHA1,
+            HashFormat.SHA256: HashcatMode.SHA256,
+            HashFormat.SHA512: HashcatMode.SHA512,
+            HashFormat.ANDROID_PIN: HashcatMode.ANDROID_PIN,
+            HashFormat.ANDROID_PASSWORD: HashcatMode.ANDROID_PASSWORD,
+            HashFormat.ANDROID_PATTERN: HashcatMode.ANDROID_PATTERN
+        }
+        
+        return format_map.get(hash_format, HashcatMode.SHA256)
+    
+    def _format_hash_for_hashcat(self, hash_target: HashTarget) -> str:
+        """Format hash for Hashcat input"""
+        hash_line = hash_target.hash_value
+        
+        # Add salt if present
+        if hash_target.salt:
+            hash_line += f":{hash_target.salt}"
+        
+        # Add iterations if present
+        if hash_target.iterations:
+            hash_line += f":{hash_target.iterations}"
+        
+        return hash_line + '\n'
+    
+    def _select_wordlist(self, strategy: AttackStrategy) -> str:
+        """Select appropriate wordlist for attack"""
+        if strategy.wordlists:
+            # Use first available wordlist
+            for wordlist in strategy.wordlists:
+                if os.path.exists(wordlist):
+                    return wordlist
+        
+        # Create simple wordlist as fallback
+        return self._create_simple_wordlist()
+    
+    def _create_simple_wordlist(self) -> str:
+        """Create a simple wordlist for testing"""
+        common_passwords = [
+            "password", "123456", "password123", "admin", "letmein",
+            "welcome", "monkey", "1234567890", "qwerty", "abc123",
+            "Password1", "password1", "123456789", "welcome123",
+            "admin123", "root", "toor", "pass", "test", "guest"
+        ]
+        
+        # Add common PINs
+        for i in range(10000):
+            common_passwords.append(f"{i:04d}")
+        
+        wordlist_content = '\n'.join(common_passwords) + '\n'
+        return self._create_temp_file(wordlist_content)
+    
+    def _monitor_hashcat_session(self, session_id: str, hash_target: HashTarget, 
+                                timeout: int) -> Optional[str]:
+        """Monitor Hashcat session with performance tracking"""
+        start_time = time.time()
+        last_update = start_time
+        
+        while time.time() - start_time < timeout:
+            if self._stop_event.is_set():
+                self._hashcat_wrapper.stop_session(session_id)
+                return None
+            
+            # Get session status
+            status = self._hashcat_wrapper.get_session_status(session_id)
+            
+            if status is None:
+                # Session finished
+                break
+            
+            # Update performance monitoring
+            current_time = time.time()
+            if current_time - last_update >= 5:  # Update every 5 seconds
+                self._update_performance_monitoring(status)
+                last_update = current_time
+                
+                # Update progress callback
+                if self._progress_callback and self._progress:
+                    self._progress.update_performance(
+                        status.total_speed,
+                        gpu_util=self._get_average_gpu_utilization(),
+                        temp=self._get_average_gpu_temperature()
+                    )
+                    self._progress_callback(self._progress)
+            
+            time.sleep(1)
+        
+        return None
+    
+    def _update_performance_monitoring(self, status):
+        """Update performance monitoring data"""
+        if not self._hashcat_wrapper:
+            return
+        
+        # Update GPU monitoring
+        self._hashcat_wrapper.update_gpu_monitoring()
+        
+        # Store performance data
+        self._performance_data.update({
+            'timestamp': datetime.now().isoformat(),
+            'total_speed': status.total_speed,
+            'progress_percent': status.progress_percent,
+            'gpu_devices': len(self._hashcat_wrapper.get_gpu_info()),
+            'estimated_time_remaining': status.estimated_time_remaining.total_seconds() if status.estimated_time_remaining else None
+        })
+    
+    def _get_average_gpu_utilization(self) -> float:
+        """Get average GPU utilization"""
+        if not self._hashcat_wrapper:
+            return 0.0
+        
+        gpu_info = self._hashcat_wrapper.get_gpu_info()
+        if not gpu_info:
+            return 0.0
+        
+        return sum(gpu.utilization for gpu in gpu_info) / len(gpu_info)
+    
+    def _get_average_gpu_temperature(self) -> float:
+        """Get average GPU temperature"""
+        if not self._hashcat_wrapper:
+            return 0.0
+        
+        gpu_info = self._hashcat_wrapper.get_gpu_info()
+        if not gpu_info:
+            return 0.0
+        
+        return sum(gpu.temperature for gpu in gpu_info) / len(gpu_info)
+    
+    def get_performance_data(self) -> Dict[str, Any]:
+        """Get current performance monitoring data"""
+        return self._performance_data.copy()
+    
+    def benchmark_gpu_performance(self) -> Dict[str, Any]:
+        """Run GPU performance benchmark"""
+        if not self._hashcat_available:
+            raise HashCrackingException("Hashcat not available for benchmarking")
+        
+        try:
+            # Run benchmark for common hash types
+            benchmark_results = {}
+            
+            for hash_mode in [HashcatMode.MD5, HashcatMode.SHA1, HashcatMode.SHA256]:
+                result = self._hashcat_wrapper.benchmark(hash_mode)
+                benchmark_results[hash_mode.name] = result
+            
+            return {
+                'timestamp': datetime.now().isoformat(),
+                'gpu_devices': len(self._hashcat_wrapper.get_gpu_info()),
+                'benchmarks': benchmark_results
+            }
+        
+        except Exception as e:
+            self.logger.error(f"GPU benchmark failed: {e}")
+            raise HashCrackingException(f"Benchmark failed: {e}")
+    
+    def cleanup(self):
+        """Clean up resources"""
+        # Stop attack
+        self._stop_event.set()
+        
+        # Clean up Hashcat wrapper
+        if self._hashcat_wrapper:
+            self._hashcat_wrapper.cleanup()
+        
+        # Clean up temporary files
+        for temp_file in self._temp_files:
+            try:
+                if os.path.exists(temp_file):
+                    os.unlink(temp_file)
+            except Exception as e:
+                self.logger.warning(f"Failed to clean up temp file {temp_file}: {e}")
+        
+        self._temp_files.clear()
+        self.logger.info("Hash cracking engine cleanup completed")
  
     def execute_attack(self, strategy: AttackStrategy) -> Dict[str, Any]:
         """
@@ -540,11 +778,11 @@ class HashCracking(IAttackEngine):
         engines = []
         
         # Prefer GPU-accelerated Hashcat if available and requested
-        if strategy.gpu_acceleration and self._hashcat_path and self._gpu_available:
+        if strategy.gpu_acceleration and self._hashcat_available and self._gpu_available:
             engines.append(CrackingEngine.HASHCAT)
         
         # Add Hashcat (CPU mode) if available
-        if self._hashcat_path and CrackingEngine.HASHCAT not in engines:
+        if self._hashcat_available and CrackingEngine.HASHCAT not in engines:
             engines.append(CrackingEngine.HASHCAT)
         
         # Add John the Ripper as fallback
@@ -575,7 +813,7 @@ class HashCracking(IAttackEngine):
     
     def _crack_with_hashcat(self, hash_target: HashTarget, strategy: AttackStrategy) -> CrackingResult:
         """
-        Crack hash using Hashcat
+        Crack hash using Hashcat wrapper with GPU configuration and performance monitoring
         
         Args:
             hash_target: Hash target to crack
@@ -584,34 +822,67 @@ class HashCracking(IAttackEngine):
         Returns:
             CrackingResult: Cracking result
         """
-        if not self._hashcat_path:
+        if not self._hashcat_available:
             raise HashCrackingException("Hashcat not available")
         
         try:
-            # Create temporary files
-            hash_file = self._create_temp_file(hash_target.hash_value + '\n')
-            output_file = self._create_temp_file('')
-            
-            # Build Hashcat command
-            cmd = self._build_hashcat_command(hash_target, strategy, hash_file, output_file)
-            
-            self.logger.debug(f"Running Hashcat command: {' '.join(cmd)}")
-            
-            # Execute Hashcat
             start_time = datetime.now()
-            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             
-            # Monitor progress
-            plaintext = self._monitor_hashcat_progress(process, output_file, strategy.timeout_seconds)
+            # Configure Hashcat for optimal performance
+            config = self._create_hashcat_config(hash_target, strategy)
+            self._hashcat_wrapper.configure(config)
+            
+            # Create hash file
+            hash_content = self._format_hash_for_hashcat(hash_target)
+            hash_file = self._create_temp_file(hash_content)
+            
+            # Select wordlist
+            wordlist = self._select_wordlist(strategy)
+            
+            # Create session
+            session_name = f"session_{int(time.time())}_{hash_target.hash_value[:8]}"
+            
+            # Optimize attack parameters
+            hash_mode = self._get_hashcat_mode_from_format(hash_target.hash_format)
+            wordlist_size = self._estimate_wordlist_size(strategy.wordlists)
+            optimizations = self._hashcat_wrapper.optimize_attack_parameters(hash_mode, wordlist_size)
+            
+            self.logger.info(f"Starting Hashcat session with optimizations: {optimizations}")
+            
+            # Start cracking session
+            session_id = self._hashcat_wrapper.create_session(
+                session_name=session_name,
+                hash_file=hash_file,
+                wordlist=wordlist,
+                hash_mode=hash_mode,
+                **optimizations
+            )
+            
+            # Monitor progress with performance tracking
+            result = self._monitor_hashcat_session(session_id, hash_target, strategy.timeout_seconds)
+            
+            # Get final results
+            hashcat_results = self._hashcat_wrapper.get_session_results(session_id)
             
             crack_time = datetime.now() - start_time
             
+            # Find our hash in results
+            for hc_result in hashcat_results:
+                if hc_result.hash_value == hash_target.hash_value and hc_result.cracked:
+                    return CrackingResult(
+                        hash_value=hash_target.hash_value,
+                        plaintext=hc_result.plaintext,
+                        cracked=True,
+                        crack_time=crack_time,
+                        attempts=1
+                    )
+            
+            # Not cracked
             return CrackingResult(
                 hash_value=hash_target.hash_value,
-                plaintext=plaintext,
-                cracked=plaintext is not None,
+                cracked=False,
                 crack_time=crack_time,
-                attempts=1  # Simplified
+                error_message="Hash not cracked within timeout"
             )
             
         except Exception as e:
@@ -621,6 +892,14 @@ class HashCracking(IAttackEngine):
                 cracked=False,
                 error_message=str(e)
             )
+        
+        finally:
+            # Clean up session
+            try:
+                if 'session_id' in locals():
+                    self._hashcat_wrapper.stop_session(session_id)
+            except Exception:
+                pass
     
     def _build_hashcat_command(self, hash_target: HashTarget, strategy: AttackStrategy, 
                               hash_file: str, output_file: str) -> List[str]:
@@ -975,7 +1254,7 @@ class HashCracking(IAttackEngine):
         Returns:
             Dict[str, float]: Performance metrics
         """
-        if not self._hashcat_path:
+        if not self._hashcat_available:
             return {'error': 'Hashcat not available for benchmarking'}
         
         try:

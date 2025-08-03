@@ -59,6 +59,13 @@ from .device_manager import (
     DeviceHealthStatus,
     DeviceStatus
 )
+from .opencv_wrapper import (
+    OpenCVWrapper,
+    OpenCVException,
+    DetectedCircle,
+    DetectedLine,
+    ImageProcessingConfig
+)
 
 __all__ = [
     'RolePermissionManager',
@@ -99,5 +106,10 @@ __all__ = [
     'DeviceManagerException',
     'DeviceState',
     'DeviceHealthStatus',
-    'DeviceStatus'
+    'DeviceStatus',
+    'OpenCVWrapper',
+    'OpenCVException',
+    'DetectedCircle',
+    'DetectedLine',
+    'ImageProcessingConfig'
 ]

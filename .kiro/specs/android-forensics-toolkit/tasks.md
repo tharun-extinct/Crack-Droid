@@ -192,11 +192,6 @@
     - _Requirements: 1.1, 2.1, 4.1_
 
   - [x] 7.2 Implement device manager
-
-
-
-
-
     - Write DeviceManager class for multi-device handling
     - Implement device state tracking and management
     - Add concurrent device processing capabilities
@@ -206,14 +201,6 @@
 
 - [ ] 8. Create user interface layer
   - [x] 8.1 Implement CLI interface
-
-
-
-
-
-
-
-
     - Code command-line interface for forensic operations
     - Implement interactive prompts for case setup
     - Add progress display and status reporting
@@ -222,11 +209,6 @@
     - _Requirements: 7.4_
 
   - [x] 8.2 Implement GUI interface (PyQt5)
-
-
-
-
-
     - Code main application window with forensic workflow
     - Implement device selection and configuration panels
     - Add attack progress monitoring and visualization
@@ -235,17 +217,14 @@
     - _Requirements: 7.3_
 
 - [ ] 9. Integrate external tools and dependencies
-  - [-] 9.1 Create Hashcat integration
-
-
-
+  - [x] 9.1 Create Hashcat integration
     - Implement Hashcat wrapper class with GPU configuration
     - Add hash format conversion and optimization
     - Create performance monitoring and tuning
     - Write integration tests with sample hash cracking
     - _Requirements: 2.2, 6.5_
 
-  - [ ] 9.2 Create OpenCV integration
+  - [x] 9.2 Create OpenCV integration
     - Implement OpenCV wrapper for pattern analysis
     - Add image preprocessing and pattern extraction
     - Create pattern matching algorithms
@@ -253,7 +232,8 @@
     - _Requirements: 3.3_
 
 - [ ] 10. Implement configuration and deployment
-  - [ ] 10.1 Create installation and setup scripts
+  - [-] 10.1 Create installation and setup scripts
+
     - Write installation script for Kali Linux and Ubuntu
     - Implement dependency checking and installation
     - Add configuration file generation and validation
