@@ -163,7 +163,9 @@
     - Write unit tests for report generation
     - _Requirements: 4.2_
 
-  - [-] 6.4 Implement data encryption module
+  - [x] 6.4 Implement data encryption module
+
+
 
 
 
@@ -175,7 +177,13 @@
     - _Requirements: 5.3_
 
 - [ ] 7. Create core orchestration engine
-  - [ ] 7.1 Implement forensics orchestrator
+  - [x] 7.1 Implement forensics orchestrator
+
+
+
+
+
+
     - Code ForensicsOrchestrator class as main workflow controller
     - Implement device detection and analysis coordination
     - Add attack strategy selection and execution management
@@ -183,7 +191,12 @@
     - Write integration tests for complete forensic workflows
     - _Requirements: 1.1, 2.1, 4.1_
 
-  - [ ] 7.2 Implement device manager
+  - [x] 7.2 Implement device manager
+
+
+
+
+
     - Write DeviceManager class for multi-device handling
     - Implement device state tracking and management
     - Add concurrent device processing capabilities
@@ -192,7 +205,15 @@
     - _Requirements: 6.3_
 
 - [ ] 8. Create user interface layer
-  - [ ] 8.1 Implement CLI interface
+  - [x] 8.1 Implement CLI interface
+
+
+
+
+
+
+
+
     - Code command-line interface for forensic operations
     - Implement interactive prompts for case setup
     - Add progress display and status reporting
@@ -200,7 +221,12 @@
     - Write unit tests for CLI functionality
     - _Requirements: 7.4_
 
-  - [ ] 8.2 Implement GUI interface (PyQt5)
+  - [x] 8.2 Implement GUI interface (PyQt5)
+
+
+
+
+
     - Code main application window with forensic workflow
     - Implement device selection and configuration panels
     - Add attack progress monitoring and visualization
@@ -209,7 +235,10 @@
     - _Requirements: 7.3_
 
 - [ ] 9. Integrate external tools and dependencies
-  - [ ] 9.1 Create Hashcat integration
+  - [-] 9.1 Create Hashcat integration
+
+
+
     - Implement Hashcat wrapper class with GPU configuration
     - Add hash format conversion and optimization
     - Create performance monitoring and tuning

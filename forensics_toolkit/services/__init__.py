@@ -40,6 +40,25 @@ from .report_generator import (
     ReportMetadata,
     ReportGenerationError
 )
+from .data_encryption import (
+    DataEncryption,
+    DataEncryptionError,
+    EncryptionKey,
+    EncryptedData
+)
+from .forensics_orchestrator import (
+    ForensicsOrchestrator,
+    ForensicsOrchestratorException,
+    DeviceAnalysisResult,
+    ForensicWorkflowState
+)
+from .device_manager import (
+    DeviceManager,
+    DeviceManagerException,
+    DeviceState,
+    DeviceHealthStatus,
+    DeviceStatus
+)
 
 __all__ = [
     'RolePermissionManager',
@@ -67,5 +86,18 @@ __all__ = [
     'CustodyEventType',
     'ReportGenerator',
     'ReportMetadata',
-    'ReportGenerationError'
+    'ReportGenerationError',
+    'DataEncryption',
+    'DataEncryptionError',
+    'EncryptionKey',
+    'EncryptedData',
+    'ForensicsOrchestrator',
+    'ForensicsOrchestratorException',
+    'DeviceAnalysisResult',
+    'ForensicWorkflowState',
+    'DeviceManager',
+    'DeviceManagerException',
+    'DeviceState',
+    'DeviceHealthStatus',
+    'DeviceStatus'
 ]
