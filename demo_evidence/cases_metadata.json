@@ -1,0 +1,17 @@
+[
+  {
+    "case_id": "DEMO_CASE_001",
+    "investigator_id": "demo_investigator",
+    "case_title": "Android Device Forensic Analysis Demo",
+    "case_description": "Demonstration of report generation capabilities for Android forensic analysis",
+    "created_at": "2025-08-03T13:40:26.269703",
+    "authorized_users": [
+      "demo_investigator",
+      "supervisor"
+    ],
+    "case_status": "active",
+    "evidence_count": 3,
+    "last_activity": "2025-08-03T13:40:26.296996",
+    "case_notes": ""
+  }
+]

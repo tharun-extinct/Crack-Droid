@@ -1,0 +1,21 @@
+{
+  "case_id": "DEMO_CASE_001",
+  "timestamp": "2025-08-03T12:40:26.278671",
+  "operation_type": "attack_execution",
+  "device_serial": "DEMO_DEVICE_123",
+  "attempt_number": 1,
+  "result": "Brute force attack completed - PIN cracked: 1234",
+  "hash_verification": "4cc2a9dee8994ef2cb1aceaf96c322d4598d954117df6fdef0847407d3be9c71",
+  "chain_of_custody": [],
+  "evidence_type": "attack_result",
+  "file_path": null,
+  "file_size": null,
+  "investigator_id": "demo_investigator",
+  "case_notes": "Successful PIN brute force attack",
+  "created_at": "2025-08-03T13:40:26.278671",
+  "last_verified": "2025-08-03T13:40:26.278671",
+  "verification_status": "failed",
+  "validation_errors": [
+    "Hash verification is empty - should be computed by custody manager"
+  ]
+}

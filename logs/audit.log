@@ -4,3 +4,6 @@
 {"timestamp": "2025-08-03T01:18:11.617880", "user": "investigator1", "action": "PERMISSION_CHECK", "resource": "device_access", "result": "SUCCESS", "ip_address": null, "details": {"session_id": "yb_fnKBMGsYHLD8CcBs4YOkWTvPdGh4BdyQozLaKtOE"}}
 {"timestamp": "2025-08-03T01:18:11.617880", "user": "investigator1", "action": "PERMISSION_CHECK", "resource": "user_management", "result": "DENIED", "ip_address": null, "details": {"session_id": "yb_fnKBMGsYHLD8CcBs4YOkWTvPdGh4BdyQozLaKtOE"}}
 {"timestamp": "2025-08-03T01:18:11.637766", "user": "investigator1", "action": "LOGOUT", "resource": "AUTHENTICATION", "result": "SUCCESS", "ip_address": null, "details": {"session_id": "yb_fnKBMGsYHLD8CcBs4YOkWTvPdGh4BdyQozLaKtOE"}}
+{"timestamp": "2025-08-03T12:48:05.751658", "event_type": "SYSTEM_INIT", "message": "Operations log initialized", "system": "EvidenceLogger"}
+{"timestamp": "2025-08-03T12:48:05.751658", "event_type": "SYSTEM_INIT", "message": "Evidence log initialized", "system": "EvidenceLogger"}
+{"timestamp": "2025-08-03T12:48:05.753301", "event_type": "SYSTEM_INIT", "message": "Integrity log initialized", "system": "EvidenceLogger"}

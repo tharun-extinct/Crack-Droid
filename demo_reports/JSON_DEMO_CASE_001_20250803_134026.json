@@ -1,0 +1,433 @@
+{
+  "report_metadata": {
+    "report_id": "JSON_DEMO_CASE_001_20250803_134026",
+    "case_id": "DEMO_CASE_001",
+    "report_type": "json",
+    "generated_at": "2025-08-03T13:40:26.349928",
+    "generated_by": "ForensicsToolkit",
+    "report_version": "1.0",
+    "include_raw_data": true,
+    "include_visualizations": true
+  },
+  "case_summary": {
+    "case_id": "DEMO_CASE_001",
+    "case_title": "Android Device Forensic Analysis Demo",
+    "case_description": "Demonstration of report generation capabilities for Android forensic analysis",
+    "investigator_id": "demo_investigator",
+    "created_at": "2025-08-03T13:40:26.269703",
+    "case_status": "active",
+    "evidence_count": 3,
+    "last_activity": "2025-08-03T13:40:26.296996",
+    "authorized_users": [
+      "demo_investigator",
+      "supervisor"
+    ],
+    "case_notes": ""
+  },
+  "devices_analyzed": [
+    {
+      "device_serial": "DEMO_DEVICE_123",
+      "first_seen": "2025-08-03T11:40:26.278671",
+      "last_seen": "2025-08-03T13:10:26.278671",
+      "operation_count": 3,
+      "unique_operations": [
+        "attack_execution",
+        "device_detection",
+        "data_extraction"
+      ],
+      "evidence_types": [
+        "attack_result",
+        "extracted_data",
+        "device_metadata"
+      ]
+    }
+  ],
+  "attack_strategies": [
+    {
+      "strategy_type": "brute_force",
+      "device_serial": "DEMO_DEVICE_123",
+      "start_time": "2025-08-03T13:40:26.310263",
+      "end_time": "2025-08-03T13:40:26.310263",
+      "duration_seconds": 0.0,
+      "attempt_count": 1,
+      "success_count": 0,
+      "success_rate_percent": 0.0,
+      "operations": [
+        {
+          "timestamp": "2025-08-03T13:40:26.310263",
+          "case_id": "DEMO_CASE_001",
+          "operation_type": "ATTACK_EXECUTION",
+          "device_serial": "DEMO_DEVICE_123",
+          "user_id": "demo_investigator",
+          "message": "Brute force attack initiated",
+          "metadata": {
+            "strategy_type": "brute_force",
+            "attack_target": "PIN",
+            "max_attempts": 10000,
+            "success": true,
+            "attempts_used": 1234,
+            "logger_version": "1.0",
+            "log_timestamp": "2025-08-03T13:40:26.310263",
+            "thread_id": 11408
+          },
+          "hash_value": "32876b44114cd92908bd06c9775084189574ff8938a78135dca8704edbbc05bc"
+        }
+      ]
+    }
+  ],
+  "evidence_records": [
+    {
+      "case_id": "DEMO_CASE_001",
+      "timestamp": "2025-08-03T11:40:26.278671",
+      "operation_type": "device_detection",
+      "device_serial": "DEMO_DEVICE_123",
+      "attempt_number": 1,
+      "result": "Samsung Galaxy S21 detected with Android 12, USB debugging enabled",
+      "hash_verification": "094410d26dca156595c72c1febc02410319f1371f0000e676b3dfe7d778e3065",
+      "chain_of_custody": [],
+      "evidence_type": "device_metadata",
+      "file_path": null,
+      "file_size": null,
+      "investigator_id": "demo_investigator",
+      "case_notes": "Initial device detection and metadata collection",
+      "created_at": "2025-08-03T13:40:26.278671",
+      "last_verified": "2025-08-03T13:40:26.278671",
+      "verification_status": "failed",
+      "validation_errors": [
+        "Hash verification is empty - should be computed by custody manager"
+      ]
+    },
+    {
+      "case_id": "DEMO_CASE_001",
+      "timestamp": "2025-08-03T12:40:26.278671",
+      "operation_type": "attack_execution",
+      "device_serial": "DEMO_DEVICE_123",
+      "attempt_number": 1,
+      "result": "Brute force attack completed - PIN cracked: 1234",
+      "hash_verification": "4cc2a9dee8994ef2cb1aceaf96c322d4598d954117df6fdef0847407d3be9c71",
+      "chain_of_custody": [],
+      "evidence_type": "attack_result",
+      "file_path": null,
+      "file_size": null,
+      "investigator_id": "demo_investigator",
+      "case_notes": "Successful PIN brute force attack",
+      "created_at": "2025-08-03T13:40:26.278671",
+      "last_verified": "2025-08-03T13:40:26.278671",
+      "verification_status": "failed",
+      "validation_errors": [
+        "Hash verification is empty - should be computed by custody manager"
+      ]
+    },
+    {
+      "case_id": "DEMO_CASE_001",
+      "timestamp": "2025-08-03T13:10:26.278671",
+      "operation_type": "data_extraction",
+      "device_serial": "DEMO_DEVICE_123",
+      "attempt_number": 1,
+      "result": "Extracted 1,247 contacts, 5,832 messages, 2,156 photos",
+      "hash_verification": "c91ffbc048753134e7dbc20e65e78e70c52765426e27c313930e6542a4e62d03",
+      "chain_of_custody": [],
+      "evidence_type": "extracted_data",
+      "file_path": null,
+      "file_size": null,
+      "investigator_id": "demo_investigator",
+      "case_notes": "Complete data extraction after successful unlock",
+      "created_at": "2025-08-03T13:40:26.278671",
+      "last_verified": "2025-08-03T13:40:26.278671",
+      "verification_status": "failed",
+      "validation_errors": [
+        "Unknown operation type: data_extraction",
+        "Hash verification is empty - should be computed by custody manager"
+      ]
+    }
+  ],
+  "chain_of_custody": [
+    {
+      "timestamp": "2025-08-03T13:40:26.269703",
+      "event_type": "case_created",
+      "user_id": "demo_investigator",
+      "description": "Case created: Android Device Forensic Analysis Demo",
+      "hash_before": null,
+      "hash_after": null
+    },
+    {
+      "timestamp": "2025-08-03T13:40:26.278671",
+      "event_type": "evidence_collected",
+      "user_id": "demo_investigator",
+      "description": "Evidence collected: device_detection on DEMO_DEVICE_123",
+      "hash_before": null,
+      "hash_after": "094410d26dca156595c72c1febc02410319f1371f0000e676b3dfe7d778e3065"
+    },
+    {
+      "timestamp": "2025-08-03T13:40:26.289567",
+      "event_type": "evidence_collected",
+      "user_id": "demo_investigator",
+      "description": "Evidence collected: attack_execution on DEMO_DEVICE_123",
+      "hash_before": null,
+      "hash_after": "4cc2a9dee8994ef2cb1aceaf96c322d4598d954117df6fdef0847407d3be9c71"
+    },
+    {
+      "timestamp": "2025-08-03T13:40:26.296996",
+      "event_type": "evidence_collected",
+      "user_id": "demo_investigator",
+      "description": "Evidence collected: data_extraction on DEMO_DEVICE_123",
+      "hash_before": null,
+      "hash_after": "c91ffbc048753134e7dbc20e65e78e70c52765426e27c313930e6542a4e62d03"
+    }
+  ],
+  "integrity_verification": {
+    "timestamp": "2025-08-03T13:40:26.343669",
+    "case_id": "DEMO_CASE_001",
+    "total_operations": 3,
+    "verified_operations": 3,
+    "failed_operations": 0,
+    "corrupted_entries": [],
+    "integrity_status": "verified",
+    "logger_version": "1.0",
+    "log_timestamp": "2025-08-03T13:40:26.349928",
+    "thread_id": 11408
+  },
+  "timeline_analysis": [
+    {
+      "timestamp": "2025-08-03T13:40:26.269703",
+      "event_type": "custody",
+      "operation_type": "case_created",
+      "message": "Case created: Android Device Forensic Analysis Demo",
+      "device_serial": null,
+      "user_id": "demo_investigator",
+      "source": "chain_of_custody"
+    },
+    {
+      "timestamp": "2025-08-03T13:40:26.278671",
+      "event_type": "custody",
+      "operation_type": "evidence_collected",
+      "message": "Evidence collected: device_detection on DEMO_DEVICE_123",
+      "device_serial": null,
+      "user_id": "demo_investigator",
+      "source": "chain_of_custody"
+    },
+    {
+      "timestamp": "2025-08-03T13:40:26.289567",
+      "event_type": "custody",
+      "operation_type": "evidence_collected",
+      "message": "Evidence collected: attack_execution on DEMO_DEVICE_123",
+      "device_serial": null,
+      "user_id": "demo_investigator",
+      "source": "chain_of_custody"
+    },
+    {
+      "timestamp": "2025-08-03T13:40:26.296996",
+      "event_type": "custody",
+      "operation_type": "evidence_collected",
+      "message": "Evidence collected: data_extraction on DEMO_DEVICE_123",
+      "device_serial": null,
+      "user_id": "demo_investigator",
+      "source": "chain_of_custody"
+    },
+    {
+      "timestamp": "2025-08-03T13:40:26.302779",
+      "event_type": "operation",
+      "operation_type": "DEVICE_DETECTION",
+      "message": "Android device detected and analyzed",
+      "device_serial": "DEMO_DEVICE_123",
+      "user_id": "demo_investigator",
+      "source": "evidence_logger"
+    },
+    {
+      "timestamp": "2025-08-03T13:40:26.310263",
+      "event_type": "operation",
+      "operation_type": "ATTACK_EXECUTION",
+      "message": "Brute force attack initiated",
+      "device_serial": "DEMO_DEVICE_123",
+      "user_id": "demo_investigator",
+      "source": "evidence_logger"
+    },
+    {
+      "timestamp": "2025-08-03T13:40:26.317158",
+      "event_type": "operation",
+      "operation_type": "DATA_EXTRACTION",
+      "message": "Data extraction completed successfully",
+      "device_serial": "DEMO_DEVICE_123",
+      "user_id": "demo_investigator",
+      "source": "evidence_logger"
+    }
+  ],
+  "statistical_summary": {
+    "total_operations": 3,
+    "total_evidence_records": 3,
+    "total_custody_events": 4,
+    "unique_devices": 1,
+    "unique_users": 1,
+    "case_duration_hours": 0.0,
+    "start_time": "2025-08-03T13:40:26.302779",
+    "end_time": "2025-08-03T13:40:26.317158",
+    "operations_by_type": {
+      "DEVICE_DETECTION": 1,
+      "ATTACK_EXECUTION": 1,
+      "DATA_EXTRACTION": 1
+    },
+    "evidence_by_type": {
+      "device_metadata": 1,
+      "attack_result": 1,
+      "extracted_data": 1
+    },
+    "activity_by_hour": {
+      "13": 3
+    }
+  },
+  "raw_operation_logs": [
+    {
+      "timestamp": "2025-08-03T13:40:26.302779",
+      "case_id": "DEMO_CASE_001",
+      "operation_type": "DEVICE_DETECTION",
+      "device_serial": "DEMO_DEVICE_123",
+      "user_id": "demo_investigator",
+      "message": "Android device detected and analyzed",
+      "metadata": {
+        "device_model": "Samsung Galaxy S21",
+        "android_version": "12",
+        "usb_debugging": true,
+        "root_status": false,
+        "logger_version": "1.0",
+        "log_timestamp": "2025-08-03T13:40:26.302779",
+        "thread_id": 11408
+      },
+      "hash_value": "f2216cd18324a397a3ae0efd8de438bbcc19194d0b2ac814b8ceafc98588e8cf"
+    },
+    {
+      "timestamp": "2025-08-03T13:40:26.310263",
+      "case_id": "DEMO_CASE_001",
+      "operation_type": "ATTACK_EXECUTION",
+      "device_serial": "DEMO_DEVICE_123",
+      "user_id": "demo_investigator",
+      "message": "Brute force attack initiated",
+      "metadata": {
+        "strategy_type": "brute_force",
+        "attack_target": "PIN",
+        "max_attempts": 10000,
+        "success": true,
+        "attempts_used": 1234,
+        "logger_version": "1.0",
+        "log_timestamp": "2025-08-03T13:40:26.310263",
+        "thread_id": 11408
+      },
+      "hash_value": "32876b44114cd92908bd06c9775084189574ff8938a78135dca8704edbbc05bc"
+    },
+    {
+      "timestamp": "2025-08-03T13:40:26.317158",
+      "case_id": "DEMO_CASE_001",
+      "operation_type": "DATA_EXTRACTION",
+      "device_serial": "DEMO_DEVICE_123",
+      "user_id": "demo_investigator",
+      "message": "Data extraction completed successfully",
+      "metadata": {
+        "extraction_type": "logical",
+        "contacts_count": 1247,
+        "messages_count": 5832,
+        "photos_count": 2156,
+        "total_size_mb": 2847,
+        "logger_version": "1.0",
+        "log_timestamp": "2025-08-03T13:40:26.317158",
+        "thread_id": 11408
+      },
+      "hash_value": "16e2ba4770927fd51a90591fd712b855964e341045d71bb3b8117ace49c86d3e"
+    }
+  ],
+  "visualization_data": {
+    "timeline_chart": {
+      "timestamps": [
+        "2025-08-03T13:40:26.269703",
+        "2025-08-03T13:40:26.278671",
+        "2025-08-03T13:40:26.289567",
+        "2025-08-03T13:40:26.296996",
+        "2025-08-03T13:40:26.302779",
+        "2025-08-03T13:40:26.310263",
+        "2025-08-03T13:40:26.317158"
+      ],
+      "event_types": [
+        "custody",
+        "custody",
+        "custody",
+        "custody",
+        "operation",
+        "operation",
+        "operation"
+      ],
+      "operation_types": [
+        "case_created",
+        "evidence_collected",
+        "evidence_collected",
+        "evidence_collected",
+        "DEVICE_DETECTION",
+        "ATTACK_EXECUTION",
+        "DATA_EXTRACTION"
+      ]
+    },
+    "operations_pie_chart": {
+      "labels": [
+        "DEVICE_DETECTION",
+        "ATTACK_EXECUTION",
+        "DATA_EXTRACTION"
+      ],
+      "values": [
+        1,
+        1,
+        1
+      ]
+    },
+    "activity_heatmap": {
+      "hours": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "activity_counts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  }
+}

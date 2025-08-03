@@ -465,8 +465,10 @@ class EvidenceRecord:
     
     def _validate_hash_verification(self):
         """Validate hash verification"""
+        # Allow empty hash during construction - it will be computed by custody manager
         if not self.hash_verification or not self.hash_verification.strip():
-            raise ForensicsException("Hash verification cannot be empty", "INVALID_HASH", evidence_impact=True)
+            self.validation_errors.append("Hash verification is empty - should be computed by custody manager")
+            return
         
         # SHA-256 hash format validation
         import re

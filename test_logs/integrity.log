@@ -1,1 +1,2 @@
 {"timestamp": "2025-07-23T03:12:28.739559", "operation": "TEST_OPERATION", "hash": "a223926bbb3688c606219c0e5374864f4f62b06f38fb00cc632817878a74440e"}
+{"timestamp": "2025-08-03T03:10:09.123002", "case_id": "TEST_CASE", "operation_type": "device_detection", "hash_value": "ce8901bfb832a8c1b899e0ba09d04100d724f8e551a87596335b2a68957d4608", "verification_timestamp": "2025-08-03T03:10:09.123002"}

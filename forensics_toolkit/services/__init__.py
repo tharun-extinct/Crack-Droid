@@ -24,6 +24,22 @@ from .legal_compliance import (
     CaseInfo,
     ComplianceAuditEntry
 )
+from .evidence_logger import (
+    EvidenceLogger,
+    OperationLog,
+    EvidenceLoggingError
+)
+from .chain_of_custody import (
+    ChainOfCustody,
+    CaseMetadata,
+    CustodyValidationError,
+    CustodyEventType
+)
+from .report_generator import (
+    ReportGenerator,
+    ReportMetadata,
+    ReportGenerationError
+)
 
 __all__ = [
     'RolePermissionManager',
@@ -41,5 +57,15 @@ __all__ = [
     'LegalDisclaimer',
     'ConsentRecord',
     'CaseInfo',
-    'ComplianceAuditEntry'
+    'ComplianceAuditEntry',
+    'EvidenceLogger',
+    'OperationLog',
+    'EvidenceLoggingError',
+    'ChainOfCustody',
+    'CaseMetadata',
+    'CustodyValidationError',
+    'CustodyEventType',
+    'ReportGenerator',
+    'ReportMetadata',
+    'ReportGenerationError'
 ]
