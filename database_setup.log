@@ -1,0 +1,10 @@
+2025-08-04 00:50:44,392 - forensics_toolkit.database_setup - INFO - Database initialized successfully
+2025-08-04 00:50:44,392 - __main__ - INFO - Database manager initialized with base path: ./wordlists
+2025-08-04 00:50:44,392 - __main__ - INFO - Setting up default databases...
+2025-08-04 00:50:44,395 - forensics_toolkit.database_setup - INFO - Database initialized successfully
+2025-08-04 00:50:44,396 - forensics_toolkit.database_setup - INFO - Stored 22 patterns in database
+2025-08-04 00:50:44,411 - forensics_toolkit.database_setup - INFO - Indexed 32 words from wordlist ID 1
+2025-08-04 00:50:44,411 - root - INFO - Default databases setup completed successfully
+2025-08-04 00:50:44,414 - __main__ - INFO - Verifying database integrity...
+2025-08-04 00:50:44,418 - __main__ - INFO - Gathering database statistics...
+2025-08-04 00:50:44,420 - __main__ - INFO - Database setup operations completed successfully

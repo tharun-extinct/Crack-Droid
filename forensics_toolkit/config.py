@@ -159,6 +159,10 @@ class ConfigManager:
         """Get path to a wordlist file"""
         return Path(self.forensics_settings.wordlist_directory) / wordlist_name
     
+    def get_database_path(self) -> Path:
+        """Get path to the forensics database"""
+        return Path(self.forensics_settings.wordlist_directory) / "forensics_db.sqlite"
+    
     def update_tool_path(self, tool_name: str, path: str) -> bool:
         """Update a specific tool path"""
         if hasattr(self.tool_paths, f"{tool_name}_path"):

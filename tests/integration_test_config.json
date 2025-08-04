@@ -1,0 +1,372 @@
+{
+  "test_framework_config": {
+    "version": "1.0.0",
+    "description": "Integration test framework configuration for Android Forensics Toolkit",
+    "last_updated": "2025-01-03"
+  },
+  
+  "test_environments": {
+    "development": {
+      "description": "Development environment for integration testing",
+      "mock_devices": true,
+      "performance_benchmarks": false,
+      "evidence_encryption": false,
+      "timeout_seconds": 60
+    },
+    "staging": {
+      "description": "Staging environment with full feature testing",
+      "mock_devices": true,
+      "performance_benchmarks": true,
+      "evidence_encryption": true,
+      "timeout_seconds": 300
+    },
+    "production": {
+      "description": "Production-like environment for final validation",
+      "mock_devices": false,
+      "performance_benchmarks": true,
+      "evidence_encryption": true,
+      "timeout_seconds": 600
+    }
+  },
+  
+  "test_device_configurations": {
+    "pin_device_basic": {
+      "serial": "TEST_PIN_001",
+      "model": "Galaxy S21",
+      "brand": "Samsung",
+      "android_version": "12.0",
+      "lock_type": "pin",
+      "correct_value": "1234",
+      "usb_debugging": true,
+      "root_status": false,
+      "response_delay_ms": 100,
+      "failure_probability": 0.0,
+      "max_attempts_before_lockout": 5
+    },
+    "pattern_device_basic": {
+      "serial": "TEST_PATTERN_001",
+      "model": "Pixel 6",
+      "brand": "Google",
+      "android_version": "13.0",
+      "lock_type": "pattern",
+      "correct_value": "012345678",
+      "usb_debugging": true,
+      "root_status": false,
+      "response_delay_ms": 150,
+      "failure_probability": 0.0,
+      "max_attempts_before_lockout": 5
+    },
+    "password_device_basic": {
+      "serial": "TEST_PASSWORD_001",
+      "model": "OnePlus 9",
+      "brand": "OnePlus",
+      "android_version": "11.0",
+      "lock_type": "password",
+      "correct_value": "password123",
+      "usb_debugging": false,
+      "root_status": true,
+      "response_delay_ms": 200,
+      "failure_probability": 0.0,
+      "max_attempts_before_lockout": 3
+    },
+    "locked_device_edl": {
+      "serial": "TEST_EDL_001",
+      "model": "Xiaomi Mi 11",
+      "brand": "Xiaomi",
+      "android_version": "12.0",
+      "lock_type": "password",
+      "correct_value": "complex_password_123",
+      "usb_debugging": false,
+      "root_status": false,
+      "bootloader_locked": true,
+      "response_delay_ms": 300,
+      "failure_probability": 0.1,
+      "max_attempts_before_lockout": 3
+    },
+    "high_failure_device": {
+      "serial": "TEST_UNRELIABLE_001",
+      "model": "Test Device",
+      "brand": "TestBrand",
+      "android_version": "10.0",
+      "lock_type": "pin",
+      "correct_value": "9999",
+      "usb_debugging": true,
+      "root_status": false,
+      "response_delay_ms": 500,
+      "failure_probability": 0.3,
+      "max_attempts_before_lockout": 5
+    }
+  },
+  
+  "performance_benchmarks": {
+    "device_detection": {
+      "iterations": 50,
+      "concurrent_threads": 1,
+      "timeout_seconds": 60,
+      "expected_throughput_ops_per_second": 5.0,
+      "max_memory_usage_mb": 200.0,
+      "max_cpu_usage_percent": 50.0
+    },
+    "concurrent_analysis": {
+      "iterations": 20,
+      "concurrent_threads": 4,
+      "timeout_seconds": 120,
+      "expected_throughput_ops_per_second": 2.0,
+      "max_memory_usage_mb": 500.0,
+      "max_cpu_usage_percent": 70.0
+    },
+    "brute_force_attack": {
+      "iterations": 30,
+      "concurrent_threads": 2,
+      "timeout_seconds": 180,
+      "expected_throughput_ops_per_second": 10.0,
+      "max_memory_usage_mb": 300.0,
+      "max_cpu_usage_percent": 80.0
+    },
+    "evidence_logging": {
+      "iterations": 1000,
+      "concurrent_threads": 5,
+      "timeout_seconds": 60,
+      "expected_throughput_ops_per_second": 100.0,
+      "max_memory_usage_mb": 150.0,
+      "max_cpu_usage_percent": 40.0
+    },
+    "report_generation": {
+      "iterations": 50,
+      "concurrent_threads": 3,
+      "timeout_seconds": 300,
+      "expected_throughput_ops_per_second": 5.0,
+      "max_memory_usage_mb": 400.0,
+      "max_cpu_usage_percent": 60.0
+    }
+  },
+  
+  "integrity_validation": {
+    "hash_algorithm": "sha256",
+    "encryption_algorithm": "AES-256-GCM",
+    "evidence_file_extensions": [".json", ".log", ".bin", ".img"],
+    "chain_of_custody_required_fields": [
+      "timestamp",
+      "user",
+      "action",
+      "location",
+      "evidence_hash"
+    ],
+    "integrity_check_interval_seconds": 300,
+    "tamper_detection_enabled": true
+  },
+  
+  "test_data_sets": {
+    "common_pins": [
+      "0000", "1234", "1111", "0123", "1212",
+      "7777", "1004", "2000", "4444", "2222",
+      "6969", "9999", "3333", "5555", "6666",
+      "1313", "8888", "4321", "2001", "1010"
+    ],
+    "common_patterns": [
+      "012345678", "036147258", "012358", "147852369",
+      "0124", "0147", "0258", "0369", "01478", "02580"
+    ],
+    "common_passwords": [
+      "password", "123456", "password123", "admin",
+      "qwerty", "letmein", "welcome", "monkey",
+      "dragon", "master", "shadow", "superman"
+    ]
+  },
+  
+  "requirements_mapping": {
+    "1.1": {
+      "description": "Device detection with USB debugging",
+      "test_suites": ["forensic_workflows", "device_simulation"],
+      "critical": true
+    },
+    "1.2": {
+      "description": "Lock type identification",
+      "test_suites": ["forensic_workflows", "device_simulation"],
+      "critical": true
+    },
+    "1.3": {
+      "description": "Screen timeout detection",
+      "test_suites": ["forensic_workflows"],
+      "critical": false
+    },
+    "1.4": {
+      "description": "Root access file pulling",
+      "test_suites": ["forensic_workflows"],
+      "critical": true
+    },
+    "1.5": {
+      "description": "Device metadata collection",
+      "test_suites": ["device_simulation"],
+      "critical": true
+    },
+    "2.1": {
+      "description": "Brute force attacks",
+      "test_suites": ["forensic_workflows", "performance_benchmarks"],
+      "critical": true
+    },
+    "2.2": {
+      "description": "GPU-accelerated cracking",
+      "test_suites": ["forensic_workflows"],
+      "critical": false
+    },
+    "2.3": {
+      "description": "Lockout delay handling",
+      "test_suites": ["forensic_workflows"],
+      "critical": true
+    },
+    "2.4": {
+      "description": "Dictionary attacks",
+      "test_suites": ["forensic_workflows"],
+      "critical": true
+    },
+    "3.1": {
+      "description": "EDL mode access",
+      "test_suites": ["device_simulation"],
+      "critical": true
+    },
+    "3.2": {
+      "description": "Firehose loaders",
+      "test_suites": ["device_simulation"],
+      "critical": false
+    },
+    "3.3": {
+      "description": "Pattern analysis",
+      "test_suites": ["forensic_workflows"],
+      "critical": true
+    },
+    "3.5": {
+      "description": "NAND dumps",
+      "test_suites": ["device_simulation"],
+      "critical": false
+    },
+    "4.1": {
+      "description": "Evidence logging",
+      "test_suites": ["evidence_integrity"],
+      "critical": true
+    },
+    "4.2": {
+      "description": "Report generation",
+      "test_suites": ["evidence_integrity"],
+      "critical": true
+    },
+    "4.3": {
+      "description": "Chain of custody",
+      "test_suites": ["evidence_integrity"],
+      "critical": true
+    },
+    "4.4": {
+      "description": "Case ID authorization",
+      "test_suites": ["evidence_integrity"],
+      "critical": true
+    },
+    "5.1": {
+      "description": "Role-based access",
+      "test_suites": ["forensic_workflows"],
+      "critical": true
+    },
+    "5.2": {
+      "description": "Legal disclaimer",
+      "test_suites": ["forensic_workflows"],
+      "critical": true
+    },
+    "5.3": {
+      "description": "Data encryption",
+      "test_suites": ["evidence_integrity"],
+      "critical": true
+    },
+    "5.4": {
+      "description": "Authorized environments",
+      "test_suites": ["forensic_workflows"],
+      "critical": true
+    },
+    "5.5": {
+      "description": "Audit trails",
+      "test_suites": ["evidence_integrity"],
+      "critical": true
+    },
+    "6.1": {
+      "description": "Dictionary + mask attacks",
+      "test_suites": ["performance_benchmarks"],
+      "critical": false
+    },
+    "6.2": {
+      "description": "Heuristic prioritization",
+      "test_suites": ["performance_benchmarks"],
+      "critical": false
+    },
+    "6.3": {
+      "description": "Multi-device processing",
+      "test_suites": ["device_manager_integration"],
+      "critical": true
+    },
+    "6.4": {
+      "description": "Lockout management",
+      "test_suites": ["performance_benchmarks"],
+      "critical": true
+    },
+    "6.5": {
+      "description": "GPU acceleration",
+      "test_suites": ["performance_benchmarks"],
+      "critical": false
+    },
+    "7.1": {
+      "description": "Platform support",
+      "test_suites": ["forensic_workflows"],
+      "critical": true
+    },
+    "7.2": {
+      "description": "Tool integration",
+      "test_suites": ["device_simulation"],
+      "critical": true
+    },
+    "7.3": {
+      "description": "GUI interface",
+      "test_suites": ["forensic_workflows"],
+      "critical": false
+    },
+    "7.4": {
+      "description": "Wordlist loading",
+      "test_suites": ["forensic_workflows"],
+      "critical": true
+    },
+    "7.5": {
+      "description": "Tool integration",
+      "test_suites": ["performance_benchmarks"],
+      "critical": true
+    }
+  },
+  
+  "reporting": {
+    "formats": ["json", "html", "junit"],
+    "include_performance_metrics": true,
+    "include_system_info": true,
+    "include_requirements_coverage": true,
+    "generate_charts": false,
+    "output_directory": "test_results",
+    "archive_results": true,
+    "max_archived_results": 10
+  },
+  
+  "ci_cd_integration": {
+    "jenkins": {
+      "junit_xml_output": true,
+      "performance_thresholds": true,
+      "fail_on_coverage_below": 80.0
+    },
+    "github_actions": {
+      "artifact_upload": true,
+      "status_checks": true,
+      "comment_on_pr": true
+    },
+    "docker": {
+      "test_container_image": "forensics-toolkit-test:latest",
+      "mount_volumes": ["/tmp/test_data", "/tmp/test_results"],
+      "environment_variables": {
+        "TEST_ENV": "ci",
+        "MOCK_DEVICES": "true",
+        "PERFORMANCE_TESTS": "false"
+      }
+    }
+  }
+}
