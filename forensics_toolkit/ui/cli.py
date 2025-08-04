@@ -317,9 +317,9 @@ Examples:
         """Handle legal compliance workflow"""
         try:
             # Display legal disclaimer
-            disclaimer = self.legal_compliance.get_legal_disclaimer()
+            disclaimer = self.legal_compliance.display_disclaimer()
             self._print_warning("LEGAL DISCLAIMER")
-            print(disclaimer['content'])
+            print(disclaimer.content)
             
             # Get consent
             consent = input(f"\n{CLIColors.WARNING}Do you agree to the terms? (yes/no): {CLIColors.ENDC}").strip().lower()
@@ -328,10 +328,11 @@ Examples:
                 return False
             
             # Record consent
-            self.legal_compliance.record_consent(
-                user_id=self.current_session.user.username,
-                consent_type="legal_disclaimer",
-                consent_given=True
+            self.legal_compliance.capture_consent(
+                user=self.current_session.user.username,
+                consent_given=True,
+                case_id="SYSTEM",  # Will be updated with actual case ID later
+                ip_address="127.0.0.1"
             )
             
             self._print_success("Legal compliance confirmed")

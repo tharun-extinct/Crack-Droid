@@ -7,3 +7,14 @@
 {"timestamp": "2025-08-03T12:48:05.751658", "event_type": "SYSTEM_INIT", "message": "Operations log initialized", "system": "EvidenceLogger"}
 {"timestamp": "2025-08-03T12:48:05.751658", "event_type": "SYSTEM_INIT", "message": "Evidence log initialized", "system": "EvidenceLogger"}
 {"timestamp": "2025-08-03T12:48:05.753301", "event_type": "SYSTEM_INIT", "message": "Integrity log initialized", "system": "EvidenceLogger"}
+{"timestamp": "2025-08-05T00:10:50.457440", "user": "exit", "action": "LOGIN_ATTEMPT", "resource": "AUTHENTICATION", "result": "FAILURE", "ip_address": null, "details": null}
+{"timestamp": "2025-08-05T00:11:08.896733", "user": "exit", "action": "LOGIN_ATTEMPT", "resource": "AUTHENTICATION", "result": "FAILURE", "ip_address": null, "details": null}
+{"timestamp": "2025-08-05T00:12:04.356569", "user": "investigator1", "action": "LOGIN_ATTEMPT", "resource": "AUTHENTICATION", "result": "SUCCESS", "ip_address": null, "details": null}
+{"timestamp": "2025-08-05T00:12:04.356569", "user": "investigator1", "action": "CREATE_SESSION", "resource": "AUTHENTICATION", "result": "SUCCESS", "ip_address": null, "details": {"session_id": "wUSP431ZsfeNtOnwXRXBU3nUBkAuhIEpJNVFbcVEbrQ"}}
+{"timestamp": "2025-08-05T00:14:17.548710", "user": "exit", "action": "LOGIN_ATTEMPT", "resource": "AUTHENTICATION", "result": "FAILURE", "ip_address": null, "details": null}
+{"timestamp": "2025-08-05T00:15:46.625180", "user": "admin", "action": "LOGIN_ATTEMPT", "resource": "AUTHENTICATION", "result": "SUCCESS", "ip_address": null, "details": null}
+{"timestamp": "2025-08-05T00:15:46.625180", "user": "admin", "action": "CREATE_SESSION", "resource": "AUTHENTICATION", "result": "SUCCESS", "ip_address": null, "details": {"session_id": "pGZaco5b1HlpcpGE7e36HP6RJiCoulE0G_HhJ-jORuY"}}
+{"timestamp": "2025-08-05T00:19:27.037410", "user": "admin", "action": "LOGIN_ATTEMPT", "resource": "AUTHENTICATION", "result": "SUCCESS", "ip_address": null, "details": null}
+{"timestamp": "2025-08-05T00:19:27.037410", "user": "admin", "action": "CREATE_SESSION", "resource": "AUTHENTICATION", "result": "SUCCESS", "ip_address": null, "details": {"session_id": "rQIc6SrWeCI_O95qdXPmnXx7idFaORDAI_04vaNpaWs"}}
+{"timestamp": "2025-08-05T00:23:52.856006", "user": "admin", "action": "LOGIN_ATTEMPT", "resource": "AUTHENTICATION", "result": "SUCCESS", "ip_address": null, "details": null}
+{"timestamp": "2025-08-05T00:23:52.857006", "user": "admin", "action": "CREATE_SESSION", "resource": "AUTHENTICATION", "result": "SUCCESS", "ip_address": null, "details": {"session_id": "9cD2OimjIiSlvEnJLqjTAceLNr1GYYtDMoVgd_wLFAo"}}

@@ -1,0 +1,3 @@
+{"timestamp": "2025-08-05T00:26:03.652526", "event_type": "SYSTEM_INIT", "message": "Operations log initialized", "system": "EvidenceLogger"}
+{"timestamp": "2025-08-05T00:26:03.660604", "event_type": "SYSTEM_INIT", "message": "Evidence log initialized", "system": "EvidenceLogger"}
+{"timestamp": "2025-08-05T00:26:03.661636", "event_type": "SYSTEM_INIT", "message": "Integrity log initialized", "system": "EvidenceLogger"}

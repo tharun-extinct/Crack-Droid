@@ -1,0 +1,4 @@
+{"timestamp": "2025-08-05T00:26:46.863562", "event_type": "SYSTEM_INIT", "message": "Operations log initialized", "system": "EvidenceLogger"}
+{"timestamp": "2025-08-05T00:26:46.863562", "event_type": "SYSTEM_INIT", "message": "Evidence log initialized", "system": "EvidenceLogger"}
+{"timestamp": "2025-08-05T00:26:46.863562", "event_type": "SYSTEM_INIT", "message": "Integrity log initialized", "system": "EvidenceLogger"}
+{"timestamp": "2025-08-05T00:27:08.797210", "case_id": "1", "operation_type": "device_detection", "user_id": null, "device_serial": null, "message": "Detected 0 devices", "hash_reference": "232985631c86328b9c2bdcf7405cf70c8a08322e0848f72dc54b6640aeeb1ea4"}
