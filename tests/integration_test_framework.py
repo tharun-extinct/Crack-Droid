@@ -3,7 +3,7 @@ Comprehensive Integration Test Framework for Android Forensics Toolkit
 
 This module provides a complete integration testing framework that validates
 end-to-end forensic workflows, device simulation, evidence integrity, and
-performance benchmarking for the ForenCrack Droid toolkit.
+performance benchmarking for the Crack Droid toolkit.
 """
 
 import pytest

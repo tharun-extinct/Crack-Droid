@@ -700,7 +700,7 @@ class ReportGenerator:
             disclaimer = """
             <b>LEGAL NOTICE:</b><br/>
             This report contains the results of a digital forensic examination conducted using 
-            ForenCrack Droid forensic toolkit. The examination was performed in accordance with 
+            Crack Droid forensic toolkit. The examination was performed in accordance with 
             established forensic procedures and industry best practices. All evidence has been 
             handled according to proper chain of custody procedures and integrity verification 
             protocols. This report is intended for authorized law enforcement and legal proceedings only.

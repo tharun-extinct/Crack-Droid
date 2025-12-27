@@ -1,2 +1,0 @@
-{"timestamp": "2025-08-03T03:10:09.123002", "event_type": "SYSTEM_INIT", "message": "Operations log initialized", "system": "EvidenceLogger"}
-{"timestamp": "2025-08-03T03:10:09.123002", "case_id": "TEST_CASE", "operation_type": "device_detection", "user_id": null, "device_serial": null, "message": "Test message", "hash_reference": "ce8901bfb832a8c1b899e0ba09d04100d724f8e551a87596335b2a68957d4608"}

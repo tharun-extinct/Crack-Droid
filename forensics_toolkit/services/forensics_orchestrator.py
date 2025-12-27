@@ -24,8 +24,6 @@ from ..config import config_manager
 from .adb_handler import ADBHandler
 from .evidence_logger import EvidenceLogger
 from .chain_of_custody import ChainOfCustody
-from .authentication import AuthenticationService
-from .legal_compliance import LegalComplianceService
 from ..attack_engines.brute_force import BruteForceEngine
 from ..attack_engines.dictionary_attack import DictionaryAttack
 from ..attack_engines.hash_cracking import HashCracking
@@ -130,10 +128,9 @@ class ForensicsOrchestrator(IForensicsEngine):
                 storage_path=str(config_manager.get_evidence_path(self.case_id))
             )
             
-            # Authentication and compliance
-            if self.user_session:
-                self.auth_service = AuthenticationService()
-                self.legal_compliance = LegalComplianceService()
+            # Authentication and compliance removed - simplified mode
+            self.auth_service = None
+            self.legal_compliance = None
             
             self.logger.info("Core services initialized successfully")
             

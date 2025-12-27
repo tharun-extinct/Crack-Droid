@@ -1,6 +1,6 @@
-# ForenCrack Droid GUI Interface
+# Crack Droid GUI Interface
 
-This directory contains the PyQt5-based graphical user interface for the ForenCrack Droid Android forensics toolkit.
+This directory contains the PyQt5-based graphical user interface for the Crack Droid Android forensics toolkit.
 
 ## Overview
 
@@ -292,7 +292,7 @@ GUI operations are logged to:
 
 ## License
 
-This GUI interface is part of the ForenCrack Droid forensics toolkit and is subject to the same licensing terms as the main project.
+This GUI interface is part of the Crack Droid forensics toolkit and is subject to the same licensing terms as the main project.
 
 ## Support
 

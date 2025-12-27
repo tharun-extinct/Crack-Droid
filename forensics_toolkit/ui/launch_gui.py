@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-GUI Launcher for ForenCrack Droid
+GUI Launcher for Crack Droid
 
 This script provides a convenient way to launch the PyQt5 GUI interface
 with proper error handling and dependency checking.
@@ -59,7 +59,7 @@ def install_pyqt5():
 
 def main():
     """Main launcher function"""
-    print("ForenCrack Droid GUI Launcher")
+    print("Crack Droid GUI Launcher")
     print("=" * 40)
     
     # Check dependencies

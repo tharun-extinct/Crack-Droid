@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ForenCrack Droid Installation Script
+# Crack Droid Installation Script
 # Supports Kali Linux and Ubuntu Forensic Edition
 
 set -e
@@ -396,7 +396,7 @@ print('Configuration file is valid JSON')
 
 # Main installation function
 main() {
-    print_status "Starting ForenCrack Droid installation..."
+    print_status "Starting Crack Droid installation..."
     echo "Installation log: $LOG_FILE"
     
     # Create log file
@@ -415,8 +415,8 @@ main() {
     
     print_success "Installation completed successfully!"
     print_status "Configuration directory: $CONFIG_DIR"
-    print_status "To start the toolkit, run: python3 forencracks.py"
-    print_status "For GUI mode, run: python3 forencracks.py --gui"
+    print_status "To start the toolkit, run: python3 crackdroid.py"
+    print_status "For GUI mode, run: python3 crackdroid.py --gui"
 }
 
 # Run main function

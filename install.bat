@@ -1,8 +1,8 @@
 @echo off
-REM ForenCrack Droid Installation Script for Windows
+REM Crack Droid Installation Script for Windows
 REM This script provides Windows compatibility for development/testing
 
-echo ForenCrack Droid Installation Script
+echo Crack Droid Installation Script
 echo =====================================
 echo.
 echo WARNING: This toolkit is designed for Linux environments.
@@ -55,7 +55,7 @@ echo   ./install.sh
 echo.
 echo To start development:
 echo   1. Activate virtual environment: venv\Scripts\activate.bat
-echo   2. Run toolkit: python forencracks.py
+echo   2. Run toolkit: python crackdroid.py
 echo.
 
 pause

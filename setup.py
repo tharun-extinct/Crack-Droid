@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ForenCrack Droid Setup Script
+Crack Droid Setup Script
 Advanced configuration and validation for forensics toolkit
 """
 
@@ -24,7 +24,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class ForensicsSetup:
-    """Main setup class for ForenCrack Droid toolkit"""
+    """Main setup class for Crack Droid toolkit"""
     
     def __init__(self):
         self.home_dir = Path.home()
@@ -516,7 +516,7 @@ class ForensicsSetup:
 
     def run_setup(self) -> bool:
         """Run the complete setup process"""
-        logger.info("Starting ForenCrack Droid setup...")
+        logger.info("Starting Crack Droid setup...")
         
         try:
             # System detection and validation
@@ -549,7 +549,7 @@ class ForensicsSetup:
             
             logger.info("Setup completed successfully!")
             logger.info(f"Configuration directory: {self.config_dir}")
-            logger.info("Run 'python3 forencracks.py --help' to get started")
+            logger.info("Run 'python3 crackdroid.py --help' to get started")
             
             return True
             
@@ -561,7 +561,7 @@ class ForensicsSetup:
 def main():
     """Main entry point"""
     if len(sys.argv) > 1 and sys.argv[1] in ['-h', '--help']:
-        print("ForenCrack Droid Setup Script")
+        print("Crack Droid Setup Script")
         print("Usage: python3 setup.py")
         print("\nThis script will:")
         print("- Validate system compatibility")

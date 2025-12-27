@@ -1,5 +1,5 @@
 """
-Command Line Interface for ForenCrack Droid
+Command Line Interface for Crack Droid
 
 This module implements the CLI interface for forensic operations including:
 - Interactive prompts for case setup
@@ -23,8 +23,6 @@ from ..interfaces import (
     UserRole, Permission, ForensicsException
 )
 from ..services.forensics_orchestrator import ForensicsOrchestrator
-from ..services.authentication import AuthenticationService, UserManager
-from ..services.legal_compliance import LegalComplianceService
 from ..config import config_manager
 
 
@@ -95,7 +93,7 @@ class ProgressDisplay:
 
 class ForensicsCLI:
     """
-    Command Line Interface for ForenCrack Droid
+    Command Line Interface for Crack Droid
     
     Provides interactive forensic operations with:
     - Case setup and management
@@ -105,9 +103,6 @@ class ForensicsCLI:
     """
     
     def __init__(self):
-        self.auth_service = AuthenticationService()
-        self.user_manager = UserManager()
-        self.legal_compliance = LegalComplianceService()
         self.current_session = None
         self.current_orchestrator = None
         self.progress_display = None
@@ -118,22 +113,22 @@ class ForensicsCLI:
     def _setup_argument_parser(self) -> argparse.ArgumentParser:
         """Setup command line argument parser"""
         parser = argparse.ArgumentParser(
-            prog='forencracks',
-            description='ForenCrack Droid - Android Forensics Toolkit',
+            prog='crackdroid',
+            description='Crack Droid - Android Forensics Toolkit',
             formatter_class=argparse.RawDescriptionHelpFormatter,
             epilog="""
 Examples:
-  forencracks interactive          # Start interactive mode
-  forencracks detect              # Detect connected devices
-  forencracks analyze --device SERIAL  # Analyze specific device
-  forencracks attack --case CASE_ID --device SERIAL --type brute_force
-  forencracks report --case CASE_ID    # Generate case report
-  forencracks config --validate        # Validate tool configuration
+  crackdroid interactive          # Start interactive mode
+  crackdroid detect              # Detect connected devices
+  crackdroid analyze --device SERIAL  # Analyze specific device
+  crackdroid attack --case CASE_ID --device SERIAL --type brute_force
+  crackdroid report --case CASE_ID    # Generate case report
+  crackdroid config --validate        # Validate tool configuration
             """
         )
         
         # Global options
-        parser.add_argument('--version', action='version', version='ForenCrack Droid 1.0.0')
+        parser.add_argument('--version', action='version', version='Crack Droid 1.0.0')
         parser.add_argument('--verbose', '-v', action='store_true', help='Enable verbose output')
         parser.add_argument('--config', help='Configuration file path')
         
@@ -235,15 +230,30 @@ Examples:
     
     def _run_interactive_mode(self) -> int:
         """Run interactive mode"""
-        self._print_header("ForenCrack Droid - Interactive Mode")
+        self._print_header("Crack Droid - Interactive Mode")
         
-        # Authentication
-        if not self._authenticate_user():
-            return 1
+        # SIMPLIFIED MODE - Skip authentication and legal compliance
+        self._print_info("Running in simplified mode (authentication disabled)")
         
-        # Legal compliance
-        if not self._handle_legal_compliance():
-            return 1
+        # Create a mock session for compatibility
+        from ..interfaces import User, Session, UserRole, Permission
+        from datetime import datetime, timedelta
+        mock_user = User(
+            username="forensics_user",
+            role=UserRole.ADMIN,
+            permissions=[Permission.DEVICE_ACCESS, Permission.ATTACK_EXECUTION, 
+                        Permission.EVIDENCE_MANAGEMENT, Permission.REPORT_GENERATION],
+            created_at=datetime.now(),
+            is_active=True
+        )
+        self.current_session = Session(
+            session_id="mock_session",
+            user=mock_user,
+            created_at=datetime.now(),
+            last_activity=datetime.now(),
+            expires_at=datetime.now() + timedelta(hours=24),
+            is_active=True
+        )
         
         # Main interactive loop
         while True:
@@ -278,7 +288,7 @@ Examples:
     
     def _print_menu(self):
         """Print main menu"""
-        print(f"\n{CLIColors.HEADER}=== ForenCrack Droid - Main Menu ==={CLIColors.ENDC}")
+        print(f"\n{CLIColors.HEADER}=== Crack Droid - Main Menu ==={CLIColors.ENDC}")
         print("1. Case Setup")
         print("2. Device Detection")
         print("3. Device Analysis")
@@ -790,36 +800,53 @@ Examples:
     # Command handlers for non-interactive mode
     def _handle_auth_command(self, args) -> int:
         """Handle authentication commands"""
-        if args.auth_command == 'login':
-            return self._handle_login()
-        elif args.auth_command == 'logout':
-            return self._handle_logout()
-        elif args.auth_command == 'whoami':
-            return self._handle_whoami()
-        else:
-            self._print_error("Unknown auth command")
-            return 1
+        self._print_info("Authentication is disabled in simplified mode")
+        return 0
     
     def _handle_detect_command(self, args) -> int:
         """Handle device detection command"""
-        # This would need authentication and case setup
-        self._print_error("Non-interactive mode requires authentication. Use 'interactive' mode.")
-        return 1
+        self._print_info("Simplified mode - detecting devices without authentication")
+        
+        # Create mock session
+        self._create_mock_session()
+        
+        # Create orchestrator
+        try:
+            self.current_orchestrator = ForensicsOrchestrator(
+                case_id="QUICK_SCAN",
+                user_session="mock_session"
+            )
+            
+            # Detect devices
+            devices = self.current_orchestrator.detect_devices()
+            
+            if not devices:
+                self._print_warning("No devices detected")
+                return 1
+            
+            self._print_success(f"Detected {len(devices)} device(s):")
+            for i, device in enumerate(devices, 1):
+                print(f"{i}. {device.brand} {device.model} (Serial: {device.serial})")
+            
+            return 0
+        except Exception as e:
+            self._print_error(f"Device detection failed: {e}")
+            return 1
     
     def _handle_analyze_command(self, args) -> int:
         """Handle device analysis command"""
-        self._print_error("Non-interactive mode requires authentication. Use 'interactive' mode.")
-        return 1
+        self._print_info("Simplified mode - Use 'interactive' mode for full analysis")
+        return 0
     
     def _handle_attack_command(self, args) -> int:
         """Handle attack execution command"""
-        self._print_error("Non-interactive mode requires authentication. Use 'interactive' mode.")
-        return 1
+        self._print_info("Simplified mode - Use 'interactive' mode for attacks")
+        return 0
     
     def _handle_report_command(self, args) -> int:
         """Handle report generation command"""
-        self._print_error("Non-interactive mode requires authentication. Use 'interactive' mode.")
-        return 1
+        self._print_info("Simplified mode - Use 'interactive' mode for reports")
+        return 0
     
     def _handle_config_command(self, args) -> int:
         """Handle configuration commands"""
@@ -871,6 +898,28 @@ Examples:
             return 1
     
     # Utility methods for colored output
+    def _create_mock_session(self):
+        """Create a mock session for simplified mode"""
+        if not self.current_session:
+            from ..interfaces import User, Session, UserRole, Permission
+            from datetime import datetime, timedelta
+            mock_user = User(
+                username="forensics_user",
+                role=UserRole.ADMIN,
+                permissions=[Permission.DEVICE_ACCESS, Permission.ATTACK_EXECUTION, 
+                            Permission.EVIDENCE_MANAGEMENT, Permission.REPORT_GENERATION],
+                created_at=datetime.now(),
+                is_active=True
+            )
+            self.current_session = Session(
+                session_id="mock_session",
+                user=mock_user,
+                created_at=datetime.now(),
+                last_activity=datetime.now(),
+                expires_at=datetime.now() + timedelta(hours=24),
+                is_active=True
+            )
+    
     def _print_header(self, text: str):
         """Print header text"""
         print(f"\n{CLIColors.HEADER}=== {text} ==={CLIColors.ENDC}")

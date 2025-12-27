@@ -2,7 +2,7 @@
 
 ## Introduction
 
-ForenCrack Droid is a digital forensics tool designed for government-authorized forensic investigators and departments. The system provides lawful access capabilities for analyzing and unlocking Android devices through multiple attack vectors, supporting both USB debugging enabled and disabled scenarios. The tool ensures forensic compliance with comprehensive evidence logging and chain-of-custody documentation.
+Crack Droid is a digital forensics tool designed for government-authorized forensic investigators and departments. The system provides lawful access capabilities for analyzing and unlocking Android devices through multiple attack vectors, supporting both USB debugging enabled and disabled scenarios. The tool ensures forensic compliance with comprehensive evidence logging and chain-of-custody documentation.
 
 ## Requirements
 

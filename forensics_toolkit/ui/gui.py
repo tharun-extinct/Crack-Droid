@@ -1,5 +1,5 @@
 """
-PyQt5 GUI Interface for ForenCrack Droid
+PyQt5 GUI Interface for Crack Droid
 
 This module implements the main GUI application window with forensic workflow including:
 - Main application window with forensic workflow
@@ -63,14 +63,14 @@ class LoginDialog(QDialog):
     
     def setup_ui(self):
         """Setup login dialog UI"""
-        self.setWindowTitle("ForenCrack Droid - Login")
+        self.setWindowTitle("Crack Droid - Login")
         self.setFixedSize(400, 300)
         self.setModal(True)
         
         layout = QVBoxLayout()
         
         # Title
-        title = QLabel("ForenCrack Droid")
+        title = QLabel("Crack Droid")
         title.setAlignment(Qt.AlignCenter)
         title.setFont(QFont("Arial", 18, QFont.Bold))
         layout.addWidget(title)
@@ -933,7 +933,7 @@ class EvidenceReportWidget(QWidget):
 
 
 class ForensicsMainWindow(QMainWindow):
-    """Main application window for ForenCrack Droid GUI"""
+    """Main application window for Crack Droid GUI"""
     
     def __init__(self):
         super().__init__()
@@ -966,7 +966,7 @@ class ForensicsMainWindow(QMainWindow):
     
     def setup_ui(self):
         """Setup main UI"""
-        self.setWindowTitle("ForenCrack Droid - Android Forensics Toolkit")
+        self.setWindowTitle("Crack Droid - Android Forensics Toolkit")
         self.setGeometry(100, 100, 1200, 800)
         
         # Central widget with tabs
@@ -1068,7 +1068,7 @@ class ForensicsMainWindow(QMainWindow):
                     user_session=self.current_session.session_id
                 )
                 
-                self.setWindowTitle(f"ForenCrack Droid - Case: {case_id}")
+                self.setWindowTitle(f"Crack Droid - Case: {case_id}")
                 self.status_bar.showMessage(f"Case '{case_id}' active")
                 
                 # Auto-detect devices
@@ -1217,8 +1217,8 @@ class ForensicsMainWindow(QMainWindow):
     
     def show_about(self):
         """Show about dialog"""
-        QMessageBox.about(self, "About ForenCrack Droid", 
-            "ForenCrack Droid v1.0.0\n\n"
+        QMessageBox.about(self, "About Crack Droid", 
+            "Crack Droid v1.0.0\n\n"
             "Android Forensics Toolkit\n"
             "For authorized forensic investigations only\n\n"
             "© 2025 Forensics Team")
@@ -1244,7 +1244,7 @@ def main():
     app = QApplication(sys.argv)
     
     # Set application properties
-    app.setApplicationName("ForenCrack Droid")
+    app.setApplicationName("Crack Droid")
     app.setApplicationVersion("1.0.0")
     app.setOrganizationName("Forensics Team")
     

@@ -1,5 +1,5 @@
 """
-Wordlist and pattern database setup module for ForenCrack Droid
+Wordlist and pattern database setup module for Crack Droid
 Handles loading, indexing, and managing wordlists and Android pattern databases
 """
 

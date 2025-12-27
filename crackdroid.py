@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-ForenCrack Droid - Main CLI Entry Point
+Crack Droid - Main CLI Entry Point
 
-This script provides the main command-line interface for the ForenCrack Droid
+This script provides the main command-line interface for the Crack Droid
 Android forensics toolkit.
 """
 

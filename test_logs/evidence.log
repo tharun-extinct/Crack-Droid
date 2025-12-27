@@ -1,1 +1,0 @@
-{"timestamp": "2025-07-23T03:12:28.739559", "level": "INFO", "operation": "TEST_OPERATION", "case_id": "TEST_CASE_001", "device_serial": "TEST_DEVICE_123", "message": "Testing evidence logging system", "metadata": {"test": true}, "hash_value": "a223926bbb3688c606219c0e5374864f4f62b06f38fb00cc632817878a74440e"}

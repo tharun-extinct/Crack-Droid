@@ -1,11 +1,11 @@
-# ForenCrack Droid Makefile
+# Crack Droid Makefile
 # Installation and deployment automation
 
 .PHONY: help install setup test clean validate deploy uninstall
 
 # Default target
 help:
-	@echo "ForenCrack Droid Installation and Deployment"
+	@echo "Crack Droid Installation and Deployment"
 	@echo "============================================="
 	@echo ""
 	@echo "Available targets:"
@@ -78,7 +78,7 @@ install: install-system setup
 	@echo "Next steps:"
 	@echo "1. Run 'make test' to validate installation"
 	@echo "2. Run 'make validate' to check configuration"
-	@echo "3. Start the toolkit with: python3 forencracks.py"
+	@echo "3. Start the toolkit with: python3 crackdroid.py"
 
 # Run deployment tests
 test:
@@ -117,12 +117,12 @@ deploy: clean install test validate
 	@echo "DEPLOYMENT COMPLETED SUCCESSFULLY!"
 	@echo "=========================================="
 	@echo ""
-	@echo "ForenCrack Droid is ready for use."
+	@echo "Crack Droid is ready for use."
 	@echo ""
 	@echo "Usage:"
-	@echo "  CLI mode:  python3 forencracks.py"
-	@echo "  GUI mode:  python3 forencracks.py --gui"
-	@echo "  Help:      python3 forencracks.py --help"
+	@echo "  CLI mode:  python3 crackdroid.py"
+	@echo "  GUI mode:  python3 crackdroid.py --gui"
+	@echo "  Help:      python3 crackdroid.py --help"
 	@echo ""
 
 # Development setup (for contributors)
@@ -171,7 +171,7 @@ restore-config:
 
 # Uninstall the toolkit
 uninstall:
-	@echo "Uninstalling ForenCrack Droid..."
+	@echo "Uninstalling Crack Droid..."
 	@read -p "This will remove all configuration and data. Continue? (y/N): " confirm; \
 	if [ "$$confirm" = "y" ] || [ "$$confirm" = "Y" ]; then \
 		echo "Creating backup before uninstall..."; \
@@ -240,7 +240,7 @@ logs:
 
 # Update the toolkit (for future use)
 update:
-	@echo "Updating ForenCrack Droid..."
+	@echo "Updating Crack Droid..."
 	@git pull 2>/dev/null || echo "Not a git repository - manual update required"
 	@make setup
 	@echo "✓ Update completed"
@@ -293,7 +293,7 @@ print('✓ Benchmark completed')
 
 # Show version information
 version:
-	@echo "ForenCrack Droid Version Information"
+	@echo "Crack Droid Version Information"
 	@echo "===================================="
 	@if [ -f ~/.forensics-toolkit/config.json ]; then \
 		python3 -c "import json; config=json.load(open('$(HOME)/.forensics-toolkit/config.json')); print('Version:', config['installation']['version']); print('Install Date:', config['installation']['install_date'])"; \

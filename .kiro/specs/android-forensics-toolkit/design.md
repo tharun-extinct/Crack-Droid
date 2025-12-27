@@ -2,7 +2,7 @@
 
 ## Overview
 
-ForenCrack Droid is architected as a modular Python-based forensics toolkit with a layered design that separates device communication, attack engines, evidence management, and user interface concerns. The system supports multiple attack vectors through pluggable modules while maintaining strict evidence integrity and legal compliance throughout all operations.
+Crack Droid is architected as a modular Python-based forensics toolkit with a design that separates device communication, attack engines, evidence management, and user interface concerns. The system supports multiple attack vectors through pluggable modules while maintaining strict evidence integrity
 
 ## Architecture
 

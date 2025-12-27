@@ -1,1 +1,0 @@
-{"timestamp": "2025-08-03T03:10:09.123002", "case_id": "TEST_CASE", "operation_type": "device_detection", "device_serial": null, "user_id": null, "message": "Test message", "metadata": {"logger_version": "1.0", "log_timestamp": "2025-08-03T03:10:09.123002", "thread_id": 9256}, "hash_value": "ce8901bfb832a8c1b899e0ba09d04100d724f8e551a87596335b2a68957d4608"}

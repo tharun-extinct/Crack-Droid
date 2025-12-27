@@ -1,4 +1,4 @@
-# Core dependencies for ForenCrack Droid
+# Core dependencies for Crack Droid
 cryptography>=3.4.8
 PyQt5>=5.15.0
 opencv-python>=4.5.0

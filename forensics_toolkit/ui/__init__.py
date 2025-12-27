@@ -1,5 +1,5 @@
 """
-User Interface components for ForenCrack Droid
+User Interface components for Crack Droid
 """
 
 from .cli import ForensicsCLI

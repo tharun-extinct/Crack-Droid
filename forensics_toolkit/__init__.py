@@ -1,5 +1,5 @@
 """
-ForenCrack Droid - Android Forensics Toolkit
+Crack Droid - Android Forensics Toolkit
 A digital forensics tool for authorized Android device analysis
 """
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Database setup script for ForenCrack Droid
+Database setup script for Crack Droid
 Sets up wordlists and pattern databases for forensic operations
 """
 
@@ -31,7 +31,7 @@ def setup_logging(verbose: bool = False):
 def main():
     """Main function for database setup"""
     parser = argparse.ArgumentParser(
-        description='Setup wordlists and pattern databases for ForenCrack Droid'
+        description='Setup wordlists and pattern databases for Crack Droid'
     )
     
     parser.add_argument(

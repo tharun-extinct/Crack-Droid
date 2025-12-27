@@ -1,10 +1,10 @@
-# ForenCrack Droid - Android Forensics Toolkit
+# Crack Droid - Android Forensics Toolkit
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Platform: Linux](https://img.shields.io/badge/platform-linux-green.svg)](https://www.linux.org/)
 
-**ForenCrack Droid** is a comprehensive Android forensics toolkit designed for authorized security professionals and forensic investigators. It provides advanced capabilities for Android device analysis, lock screen bypass, evidence collection, and forensic reporting with full legal compliance features.
+**Crack Droid** is a comprehensive Android forensics toolkit designed for authorized security professionals and forensic investigators. It provides advanced capabilities for Android device analysis, lock screen bypass, evidence collection, and forensic reporting.
 
 ## ⚠️ Legal Notice
 
@@ -103,17 +103,17 @@ For detailed installation instructions, see [INSTALLATION.md](INSTALLATION.md).
 
 **Command Line Interface:**
 ```bash
-python3 forencracks.py
+python3 crackdroid.py
 ```
 
 **Graphical Interface:**
 ```bash
-python3 forencracks.py --gui
+python3 crackdroid.py --gui
 ```
 
 **Help and Options:**
 ```bash
-python3 forencracks.py --help
+python3 crackdroid.py --help
 ```
 
 ### 2. Legal Compliance Setup
@@ -152,12 +152,12 @@ fastboot devices  # Verify connection
 
 **Interactive CLI Mode:**
 ```bash
-python3 forencracks.py --interactive
+python3 crackdroid.py --interactive
 ```
 
 **Automated Attack:**
 ```bash
-python3 forencracks.py \
+python3 crackdroid.py \
   --case-id "CASE-2024-001" \
   --device-serial "ABC123456" \
   --attack-type brute_force \
@@ -174,23 +174,23 @@ The CLI provides comprehensive forensic capabilities:
 
 ```bash
 # Show help
-python3 forencracks.py --help
+python3 crackdroid.py --help
 
 # List connected devices
-python3 forencracks.py --list-devices
+python3 crackdroid.py --list-devices
 
 # Device information
-python3 forencracks.py --device-info <serial>
+python3 crackdroid.py --device-info <serial>
 
 # Run demo mode
-python3 forencracks.py --demo
+python3 crackdroid.py --demo
 ```
 
 #### Attack Operations
 
 ```bash
 # PIN brute force attack
-python3 forencracks.py \
+python3 crackdroid.py \
   --case-id "CASE-2024-001" \
   --attack-type brute_force \
   --target-type pin \
@@ -198,14 +198,14 @@ python3 forencracks.py \
   --max-attempts 1000
 
 # Pattern analysis attack
-python3 forencracks.py \
+python3 crackdroid.py \
   --case-id "CASE-2024-001" \
   --attack-type pattern_analysis \
   --capture-screen \
   --analyze-gestures
 
 # Hash cracking attack
-python3 forencracks.py \
+python3 crackdroid.py \
   --case-id "CASE-2024-001" \
   --attack-type hash_cracking \
   --hash-file extracted_hashes.txt \
@@ -216,19 +216,19 @@ python3 forencracks.py \
 
 ```bash
 # Generate forensic report
-python3 forencracks.py \
+python3 crackdroid.py \
   --case-id "CASE-2024-001" \
   --generate-report \
   --format json \
   --output reports/
 
 # Verify evidence integrity
-python3 forencracks.py \
+python3 crackdroid.py \
   --case-id "CASE-2024-001" \
   --verify-integrity
 
 # Export case data
-python3 forencracks.py \
+python3 crackdroid.py \
   --case-id "CASE-2024-001" \
   --export-case \
   --output case_export.zip
@@ -238,7 +238,7 @@ python3 forencracks.py \
 
 The GUI provides an intuitive interface for forensic operations:
 
-1. **Launch GUI**: `python3 forencracks.py --gui`
+1. **Launch GUI**: `python3 crackdroid.py --gui`
 2. **Complete Compliance**: Follow the legal compliance wizard
 3. **Connect Device**: Use the device manager to establish connection
 4. **Configure Attack**: Select attack type and parameters
@@ -320,7 +320,7 @@ Process multiple devices or cases:
 ```bash
 # Batch processing script
 for device in $(adb devices | grep device | cut -f1); do
-    python3 forencracks.py \
+    python3 crackdroid.py \
       --case-id "BATCH-$(date +%Y%m%d)-${device}" \
       --device-serial "${device}" \
       --attack-type brute_force \
@@ -335,13 +335,13 @@ The toolkit integrates with popular forensic tools:
 
 ```bash
 # Export to Cellebrite format
-python3 forencracks.py --export-cellebrite
+python3 crackdroid.py --export-cellebrite
 
 # Import from MSAB XRY
-python3 forencracks.py --import-xry data.xml
+python3 crackdroid.py --import-xry data.xml
 
 # Integration with Autopsy
-python3 forencracks.py --autopsy-plugin
+python3 crackdroid.py --autopsy-plugin
 ```
 
 ## 📊 Reporting and Evidence
@@ -428,10 +428,10 @@ Test the toolkit safely with demo mode:
 
 ```bash
 # Interactive demo
-python3 forencracks.py --demo
+python3 crackdroid.py --demo
 
 # Automated demo
-python3 forencracks.py --demo --auto
+python3 crackdroid.py --demo --auto
 ```
 
 ## 🔒 Security Considerations
@@ -513,10 +513,10 @@ tail -f ~/.forensics-toolkit/logs/audit.log
 
 ```bash
 # Built-in help
-python3 forencracks.py --help
+python3 crackdroid.py --help
 
 # Verbose diagnostics
-python3 forencracks.py --debug --verbose
+python3 crackdroid.py --debug --verbose
 
 # System information
 make info
